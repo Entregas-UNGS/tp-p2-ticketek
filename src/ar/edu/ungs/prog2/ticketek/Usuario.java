@@ -34,13 +34,19 @@ public class Usuario {
 	};
 
 	public List<IEntrada> obtenerTodasLasEntradas() {
-		Fecha fechaActual = new Fecha();
 		return this.entradas;
 	}
 
 	public List<IEntrada> obtenerEntradasFuturas() {
+		Fecha fechaActual = Fecha.actual();
+		List<IEntrada> entradasFuturas = new ArrayList<>();
 
-		return null;
-	};
+		for (IEntrada entrada : entradas) {
+			if (entrada.obtenerFecha().esPosterior(fechaActual)) {
+				entradasFuturas.add(entrada);
+			}
+		}
+		return entradasFuturas;
+	}
 
 }
