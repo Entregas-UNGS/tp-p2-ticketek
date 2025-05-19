@@ -5,7 +5,17 @@ import java.util.Map;
 
 public class Ticketek implements ITicketek{
 	
+	private Map<String, Usuario> usuarios;
+	private Map<Integer, Sede> sedes;
+	private Map<String, Espectaculo> espectaculos;
+	private Usuario usuarioAutencicado;
+	
+	
 	public Ticketek() {
+		this.sedes = new HashMap<>();
+		this.espectaculos = new HashMap<>();
+		this.usuarios = new HashMap<>();
+		this.usuarioAutencicado = new Usuario();
 	}
 
 	@Override
