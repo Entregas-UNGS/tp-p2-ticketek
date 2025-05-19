@@ -1,19 +1,20 @@
 package ar.edu.ungs.prog2.ticketek;
 
-
 import java.time.LocalDate;
 import java.util.Objects;
 
+
 public class Fecha {
 	private LocalDate fecha;
+	private final String SEPARADOR_ISO = "-";
+	private final String SEPARADOR_DMY = "/";
 
-	Fecha(String entrada) {
-
+	public Fecha(String entrada) {
 		this.fecha = formatearFecha(entrada);
 	}
-	
-	public static String fechaActual() {
-		return LocalDate.now().toString();
+
+	public static Fecha actual() {
+		return new Fecha(LocalDate.now().toString());
 	}
 
 	public boolean esPosterior(Fecha otro) {
@@ -25,32 +26,49 @@ public class Fecha {
 		return 0;
 	}
 
-	public LocalDate formatearFecha(String entrada) {
-		// formato de entrada 31/08/25 o 2025-08-31
-		// Asumo que las fechas son posteriores al año 2000
-		StringBuilder sb = new StringBuilder(entrada);
-		int dia;
-		int mes;
-		int anio;
-		
-		if(sb.charAt(2) == '/') { // dd/mm/yy
-			dia = Integer.parseInt(sb.substring(0, 2));
-			mes = Integer.parseInt(sb.substring(3, 5));
-			anio = Integer.parseInt("20" + sb.substring(6, 8));
-			
-		} else { //yyyy-mm-dd
-			dia = Integer.parseInt(sb.substring(8, 10));
-			mes = Integer.parseInt(sb.substring(5, 7));
-			anio = Integer.parseInt(sb.substring(0, 4));
+	private LocalDate formatearFecha(String fechaIngresada) {
+		if (tieneSeparadorISO(fechaIngresada)) {
+			return parsearFormatoISO(fechaIngresada);
 		}
-		
-		/*
-		System.out.println(dia);
-		System.out.println(mes);
-		System.out.println(anio);
-		*/
+
+		if (tieneSeparadorDMY(fechaIngresada)) {
+			return parsearFormatoDMY(fechaIngresada);
+		}
+
+		throw new RuntimeException("Fecha con formato incorrecto");
+	}
+
+	private LocalDate parsearFormatoISO(String fechaEntrada) {
+		String[] fechaSeparada = fechaEntrada.split(SEPARADOR_ISO);
+
+		if (fechaSeparada[0].length() != 4) { // Verifico que el año tenga solamente 4 digitos
+			throw new RuntimeException("Fecha con formato incorrecto");
+		}
+
+		return LocalDate.parse(fechaEntrada);
+	}
+
+	private LocalDate parsearFormatoDMY(String fechaEntrada) {
+		String[] fechaSeparada = fechaEntrada.split(SEPARADOR_DMY);
+
+		if (fechaSeparada[2].length() != 2) { // Verifico que el año tenga solamente 2 digitos
+			throw new RuntimeException("Fecha con formato incorrecto");
+		}
+
+		int dia = Integer.parseInt(fechaSeparada[0]);
+		int mes = Integer.parseInt(fechaSeparada[1]);
+		int anio = Integer.parseInt(fechaSeparada[2]);
+		anio += 2000; // asumo años después del 2000
 
 		return LocalDate.of(anio, mes, dia);
+	}
+
+	private boolean tieneSeparadorISO(String fecha) {
+		return fecha.contains(SEPARADOR_ISO);
+	}
+
+	private boolean tieneSeparadorDMY(String fecha) {
+		return fecha.contains(SEPARADOR_DMY);
 	}
 
 	@Override
