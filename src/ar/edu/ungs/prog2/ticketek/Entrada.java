@@ -34,7 +34,7 @@ public class Entrada implements IEntrada {
 	}
 
 	// GETTERS ---------------------------------------------
-	public Fecha getFecha() {
+	public Fecha obtenerFecha() {
 		return this.funcion.ObtenerFecha();
 	}
 
