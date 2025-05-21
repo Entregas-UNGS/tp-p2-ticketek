@@ -1,17 +1,16 @@
 package ar.edu.ungs.prog2.ticketek;
 
-public class Entrada implements IEntrada{
-  private String codigo;
-  private String nombreEspectaculo;
-  private Fecha fecha;
-  private String sede;
-  private String ubicacion;
-  private double precio;
-//  private Usuario comprador;
-	
-	
-	
-	
+public class Entrada implements IEntrada {
+	private final String codigo;
+	private Espectaculo espectaculo;
+	private Funcion funcion;
+	private Ubicacion ubicacion;
+	private Double precio;
+
+	public Entrada() {
+		this.codigo = Codigo.generar();
+	}
+
 	@Override
 	public double precio() {
 		// TODO Auto-generated method stub
