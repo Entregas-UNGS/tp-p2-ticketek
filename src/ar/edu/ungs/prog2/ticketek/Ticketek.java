@@ -1,5 +1,6 @@
 package ar.edu.ungs.prog2.ticketek;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
