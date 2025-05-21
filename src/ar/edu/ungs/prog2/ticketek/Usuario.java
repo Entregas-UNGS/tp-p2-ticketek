@@ -42,7 +42,7 @@ public class Usuario {
 		List<IEntrada> entradasFuturas = new ArrayList<>();
 
 		for (IEntrada entrada : entradas) {
-			if (entrada.obtenerFecha().esPosterior(fechaActual)) {
+			if (entrada.obtenerFecha().esPosterior(fechaActual)) { //SaltaErrorObtenerFecha
 				entradasFuturas.add(entrada);
 			}
 		}

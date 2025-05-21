@@ -7,12 +7,27 @@ public abstract class Sede {
 	private String nombre;
 	private String direccion;
 	private Integer capacidadMaxima;
-	private ArrayList<Sector> sectores;
+	protected ArrayList<Sector> sectores;
 	
 	//CONSTRUCTOR
-	public Sede(String nombre, String direccion, String capacidadMaxima, ArrayList<Sector> sectores) {
-		//COMPLETAR
+	public Sede(String nombre, String direccion, int capacidadMaxima) {
+		this.nombre = nombre;
+		this.direccion = direccion;
+		this.capacidadMaxima = capacidadMaxima;
 	}
+
+	public Sede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
+			String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
+
+	}
+
+	public Sede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
+			int cantidadPuestos, double precioConsumicion, String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
+	}
+	//Hace falta los constructores aca siendo una clase abstracta? O aplicamos directamente polimorfimo con
+	//Teatro, MiniEstadio y EstadioDeFutbol
+
+
 	//OPERACIONES
 	public void revisarCapacidadMaxima() {
 		//COMPLETAR

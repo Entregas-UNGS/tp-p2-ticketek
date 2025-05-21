@@ -4,11 +4,14 @@ public class Sector {
 	private String nombre;
 	private Integer filas;
 	private Integer asientosPorFila;
-	private Integer adicionalSector;
+	private Integer adicionalAlSector;
 	
 	//CONSTRUCTOR
-	public Sector(String nombre, int filas, int asientosPorFila, int adicionalSector) {
-		//COMPLETAR
+	public Sector(String nombre, int asientosPorFila , int adicionalSector) {
+		this.nombre = nombre;
+		this.asientosPorFila = asientosPorFila;
+		this.adicionalAlSector = adicionalSector;
+		
 	}
 	public int capacidad() {
 		//COMPLETAR
@@ -28,7 +31,7 @@ public class Sector {
 	}
 
 	public Integer getAdicionalSector() {
-		return adicionalSector;
+		return adicionalAlSector;
 	}
 	
 }

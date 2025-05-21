@@ -1,12 +1,14 @@
 package ar.edu.ungs.prog2.ticketek;
 
-import java.util.ArrayList;
 
 public class EstadioDeFutbol extends Sede {
 	//ESTA BIEN EL CONSTRUCTOR O SE PUDE USAR DIRECTAMENTE EL DE SEDE?
-	public EstadioDeFutbol(String nombre, String direccion, String capacidadMaxima, ArrayList<Sector> sectores) {
-		super(nombre, direccion, capacidadMaxima, sectores);
-		// TODO Auto-generated constructor stub
+	public EstadioDeFutbol(String nombre, String direccion, int capacidadMaxima) {
+			//Chequear que no exista una sede con el mismo nombre
+		super(nombre, direccion, capacidadMaxima);
+		int adicionalAlSector = 0;
+		Sector campo = new Sector ("Campo", capacidadMaxima, adicionalAlSector); //Asumo que la cantidad de asientos por fila en campo es la capMax porq no hay asientos en campo
+		super.sectores.add(campo);
 	}
 
 }

@@ -34,12 +34,8 @@ public class Entrada implements IEntrada {
 	}
 
 	// GETTERS ---------------------------------------------
-	public Fecha obtenerFecha() {
+	public Fecha getFecha() {
 		return this.funcion.ObtenerFecha();
-	}
-
-	public Integer getCodigo() {
-		return codigo;
 	}
 
 	public Espectaculo getEspectaculo() {
