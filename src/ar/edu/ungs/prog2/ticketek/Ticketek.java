@@ -25,6 +25,9 @@ public class Ticketek implements ITicketek{
 			EstadioDeFutbol nueva = new EstadioDeFutbol(nombre, direccion, capacidadMaxima);
 			sedes.put(nombre, nueva); //Creo y guardo la sede en el diccionario
 		}
+		else{
+			throw new RuntimeException("Ya existe esa sede");
+		}
 		
 	}
 
@@ -35,34 +38,57 @@ public class Ticketek implements ITicketek{
 			Teatro nueva = new Teatro(nombre, direccion, capacidadMaxima, asientosPorFila, sectores, capacidad, porcentajeAdicional);
 			sedes.put(nombre, nueva); //Creo y guardo la sede en el diccionario
 		}
-		
+		else{
+			throw new RuntimeException("Ya existe esa sede");
+		}
 	}
 
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			int cantidadPuestos, double precioConsumicion, String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
-				if (!sedes.containsKey(nombre)){ //Chequeo que no haya otra sede con el mimso nombre
+		if (!sedes.containsKey(nombre)){ //Chequeo que no haya otra sede con el mimso nombre
 			MiniEstadio nueva = new MiniEstadio(nombre, direccion, capacidadMaxima, asientosPorFila,cantidadPuestos,precioConsumicion, sectores, capacidad, porcentajeAdicional);
 			sedes.put(nombre, nueva); //Creo y guardo la sede en el diccionario
+		}
+		else{
+			throw new RuntimeException("Ya existe esa sede");
 		}
 		
 	}
 
 	@Override
 	public void registrarUsuario(String email, String nombre, String apellido, String contrasenia) {
-		// TODO Auto-generated method stub
+		if (!usuarios.containsKey(email)){ //Chequeo que no haya otro usuario con el mimso mail
+			Usuario nuevo = new Usuario(email, contrasenia, nombre, apellido);
+			usuarios.put(nombre, nuevo); //Creo y guardo el usuario en el diccionario
+		}
+		else{
+			throw new RuntimeException("Ya existe un usuario con este Mail");
+		}
 		
 	}
 
 	@Override
 	public void registrarEspectaculo(String nombre) {
-		// TODO Auto-generated method stub
+		if (!espectaculos.containsKey(nombre)){ //Chequeo que no haya otro espectaculo con el mimso nombre
+			Espectaculo nuevo = new Espectaculo(nombre);
+			espectaculos.put(nombre, nuevo); //Creo y guardo el espectaculo en el diccionario
+		}
+		else{
+			throw new RuntimeException("Ya existe un espectaculo con este Mail");
+		}
 		
 	}
 
 	@Override
 	public void agregarFuncion(String nombreEspectaculo, String fecha, String sede, double precioBase) {
-		// TODO Auto-generated method stub
+		if(espectaculos.containsKey(nombreEspectaculo) && sedes.containsKey(sede)){ //Chequeo que exista dicha sede y espectaculo
+			Funcion nuevaFuncion = new Funcion(fecha, sede, precioBase); //Creo la funcion con los datos dados
+			espectaculos.get(nombreEspectaculo).agregarFuncion(nuevaFuncion); //Agrego la funcion al espectaculo
+		}
+		else{
+			throw new RuntimeException("El espectaculo y/o la sede ingresada no existen");
+		}
 		
 	}
 

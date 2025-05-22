@@ -48,7 +48,7 @@ public class Fecha {
 		return LocalDate.parse(fechaEntrada);
 	}
 
-	private LocalDate parsearFormatoDMY(String fechaEntrada) {
+	public LocalDate parsearFormatoDMY(String fechaEntrada) {
 		String[] fechaSeparada = fechaEntrada.split(SEPARADOR_DMY);
 
 		if (fechaSeparada[2].length() != 2) { // Verifico que el año tenga solamente 2 digitos
