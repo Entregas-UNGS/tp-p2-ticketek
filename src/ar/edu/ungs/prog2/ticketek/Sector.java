@@ -7,31 +7,33 @@ public class Sector {
 	private Integer adicionalAlSector;
 	
 	//CONSTRUCTOR
-	public Sector(String nombre, int asientosPorFila , int adicionalSector) {
-		this.nombre = nombre;
-		this.asientosPorFila = asientosPorFila;
-		this.adicionalAlSector = adicionalSector;
+	public Sector(String nombre, int asientosPorFila , int adicionalAlSector, Integer filas) {
+	  this.nombre = nombre;
+    this.filas = filas;
+    this.asientosPorFila = asientosPorFila;
+    this.adicionalAlSector = adicionalAlSector;
 		
 	}
+	
 	public int capacidad() {
-		//COMPLETAR
-		return 0;
+		return this.asientosPorFila * this.filas;
 	}
+	
 //GETTERS----------------------------------------------------------------------------------------
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
 
 	public Integer getFilas() {
-		return filas;
+		return this.filas;
 	}
 
 	public Integer getAsientosPorFila() {
-		return asientosPorFila;
+		return this.asientosPorFila;
 	}
 
 	public Integer getAdicionalSector() {
-		return adicionalAlSector;
+		return this.adicionalAlSector;
 	}
 	
 }
