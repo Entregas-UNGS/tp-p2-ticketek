@@ -26,7 +26,17 @@ public abstract class Sede {
 	}
 	//Hace falta los constructores aca siendo una clase abstracta? O aplicamos directamente polimorfimo con
 	//Teatro, MiniEstadio y EstadioDeFutbol
-
+	public void crearSectores (String[] sectores, int[] capacidad, int[] porcentajeAdicional){
+				if(sectores.length == capacidad.length && capacidad.length == porcentajeAdicional.length){
+   		 	for (int i = 0; i < sectores.length; i++) {
+        		Sector platea = new Sector(sectores[i], capacidad[i], porcentajeAdicional[i]);
+        		this.sectores.add(platea);
+    		}
+		}
+		else{
+			throw new RuntimeException("No coinciden la cantidad de datos dados");
+		}
+	}
 
 	//OPERACIONES
 	public void revisarCapacidadMaxima() {

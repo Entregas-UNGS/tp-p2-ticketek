@@ -7,9 +7,8 @@ public class Sector {
 	private Integer adicionalAlSector;
 	
 	//CONSTRUCTOR
-	public Sector(String nombre, int asientosPorFila , int adicionalAlSector, Integer filas) {
+	public Sector(String nombre, int asientosPorFila , int adicionalAlSector) {
 	  this.nombre = nombre;
-    this.filas = filas;
     this.asientosPorFila = asientosPorFila;
     this.adicionalAlSector = adicionalAlSector;
 		

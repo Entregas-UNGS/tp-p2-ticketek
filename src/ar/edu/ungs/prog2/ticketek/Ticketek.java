@@ -7,7 +7,7 @@ import java.util.Map;
 public class Ticketek implements ITicketek{
 	
 	private Map<String, Usuario> usuarios;
-	private Map<Integer, Sede> sedes;
+	private Map<String, Sede> sedes;
 	private Map<String, Espectaculo> espectaculos;
 	private Usuario usuarioAutencicado;
 	
@@ -18,24 +18,33 @@ public class Ticketek implements ITicketek{
 		this.usuarios = new HashMap<>();
 		this.usuarioAutencicado = new Usuario();
 	}
-
+	//Preguntar si esta bien
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima) {
-		// TODO Auto-generated method stub
+		if (!sedes.containsKey(nombre)){ //Chequeo que no haya otra sede con el mimso nombre
+			EstadioDeFutbol nueva = new EstadioDeFutbol(nombre, direccion, capacidadMaxima);
+			sedes.put(nombre, nueva); //Creo y guardo la sede en el diccionario
+		}
 		
 	}
 
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
-		// TODO Auto-generated method stub
+		if (!sedes.containsKey(nombre)){ //Chequeo que no haya otra sede con el mimso nombre
+			Teatro nueva = new Teatro(nombre, direccion, capacidadMaxima, asientosPorFila, sectores, capacidad, porcentajeAdicional);
+			sedes.put(nombre, nueva); //Creo y guardo la sede en el diccionario
+		}
 		
 	}
 
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			int cantidadPuestos, double precioConsumicion, String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
-		// TODO Auto-generated method stub
+				if (!sedes.containsKey(nombre)){ //Chequeo que no haya otra sede con el mimso nombre
+			MiniEstadio nueva = new MiniEstadio(nombre, direccion, capacidadMaxima, asientosPorFila,cantidadPuestos,precioConsumicion, sectores, capacidad, porcentajeAdicional);
+			sedes.put(nombre, nueva); //Creo y guardo la sede en el diccionario
+		}
 		
 	}
 
