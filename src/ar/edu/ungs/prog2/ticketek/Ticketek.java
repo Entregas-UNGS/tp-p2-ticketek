@@ -2,44 +2,44 @@ package ar.edu.ungs.prog2.ticketek;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class Ticketek implements ITicketek{
-	
+public class Ticketek implements ITicketek {
+
 	private Map<String, Usuario> usuarios;
 	private Map<String, Sede> sedes;
 	private Map<String, Espectaculo> espectaculos;
 	private Usuario usuarioAutencicado;
-	
-	
+
 	public Ticketek() {
 		this.sedes = new HashMap<>();
 		this.espectaculos = new HashMap<>();
 		this.usuarios = new HashMap<>();
 		this.usuarioAutencicado = new Usuario();
 	}
-	//Preguntar si esta bien
+
+	// Preguntar si esta bien
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima) {
-		if (!sedes.containsKey(nombre)){ //Chequeo que no haya otra sede con el mimso nombre
+		if (!sedes.containsKey(nombre)) { // Chequeo que no haya otra sede con el mimso nombre
 			EstadioDeFutbol nueva = new EstadioDeFutbol(nombre, direccion, capacidadMaxima);
-			sedes.put(nombre, nueva); //Creo y guardo la sede en el diccionario
-		}
-		else{
+			sedes.put(nombre, nueva); // Creo y guardo la sede en el diccionario
+		} else {
 			throw new RuntimeException("Ya existe esa sede");
 		}
-		
+
 	}
 
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
-		if (!sedes.containsKey(nombre)){ //Chequeo que no haya otra sede con el mimso nombre
-			Teatro nueva = new Teatro(nombre, direccion, capacidadMaxima, asientosPorFila, sectores, capacidad, porcentajeAdicional);
-			sedes.put(nombre, nueva); //Creo y guardo la sede en el diccionario
-		}
-		else{
+		if (!sedes.containsKey(nombre)) { // Chequeo que no haya otra sede con el mimso nombre
+			Teatro nueva = new Teatro(nombre, direccion, capacidadMaxima, asientosPorFila, sectores, capacidad,
+					porcentajeAdicional);
+			sedes.put(nombre, nueva); // Creo y guardo la sede en el diccionario
+		} else {
 			throw new RuntimeException("Ya existe esa sede");
 		}
 	}
@@ -47,83 +47,88 @@ public class Ticketek implements ITicketek{
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			int cantidadPuestos, double precioConsumicion, String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
-		if (!sedes.containsKey(nombre)){ //Chequeo que no haya otra sede con el mimso nombre
-			MiniEstadio nueva = new MiniEstadio(nombre, direccion, capacidadMaxima, asientosPorFila,cantidadPuestos,precioConsumicion, sectores, capacidad, porcentajeAdicional);
-			sedes.put(nombre, nueva); //Creo y guardo la sede en el diccionario
-		}
-		else{
+		if (!sedes.containsKey(nombre)) { // Chequeo que no haya otra sede con el mimso nombre
+			MiniEstadio nueva = new MiniEstadio(nombre, direccion, capacidadMaxima, asientosPorFila, cantidadPuestos,
+					precioConsumicion, sectores, capacidad, porcentajeAdicional);
+			sedes.put(nombre, nueva); // Creo y guardo la sede en el diccionario
+		} else {
 			throw new RuntimeException("Ya existe esa sede");
 		}
-		
+
 	}
 
 	@Override
 	public void registrarUsuario(String email, String nombre, String apellido, String contrasenia) {
-		if (!usuarios.containsKey(email)){ //Chequeo que no haya otro usuario con el mimso mail
+		if (!usuarios.containsKey(email)) { // Chequeo que no haya otro usuario con el mimso mail
 			Usuario nuevo = new Usuario(email, contrasenia, nombre, apellido);
-			usuarios.put(email, nuevo); //Creo y guardo el usuario en el diccionario
-		}
-		else{
+			usuarios.put(email, nuevo); // Creo y guardo el usuario en el diccionario
+		} else {
 			throw new RuntimeException("Ya existe un usuario con este Mail");
 		}
-		
+
 	}
 
 	@Override
 	public void registrarEspectaculo(String nombre) {
-		if (!espectaculos.containsKey(nombre)){ //Chequeo que no haya otro espectaculo con el mimso nombre
+		if (!espectaculos.containsKey(nombre)) { // Chequeo que no haya otro espectaculo con el mimso nombre
 			Espectaculo nuevo = new Espectaculo(nombre);
-			espectaculos.put(nombre, nuevo); //Creo y guardo el espectaculo en el diccionario
-		}
-		else{
+			espectaculos.put(nombre, nuevo); // Creo y guardo el espectaculo en el diccionario
+		} else {
 			throw new RuntimeException("Ya existe un espectaculo con este Mail");
 		}
-		
+
 	}
 
 	@Override
 	public void agregarFuncion(String nombreEspectaculo, String fecha, String sede, double precioBase) {
-		if(espectaculos.containsKey(nombreEspectaculo) && sedes.containsKey(sede)){ //Chequeo que exista dicha sede y espectaculo
+		if (espectaculos.containsKey(nombreEspectaculo) && sedes.containsKey(sede)) { // Chequeo que exista dicha sede y
+																																									// espectaculo
 			Sede sedeFuncion = sedes.get(sede);
-			espectaculos.get(nombreEspectaculo).agregarFuncion(fecha, sedeFuncion, precioBase); //Agrego la funcion al espectaculo
-		}
-		else{
+			espectaculos.get(nombreEspectaculo).agregarFuncion(fecha, sedeFuncion, precioBase); // Agrego la funcion al
+																																													// espectaculo
+		} else {
 			throw new RuntimeException("El espectaculo y/o la sede ingresada no existen");
 		}
-		
+
 	}
 
 	@Override
 	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fecha, String email, String contrasenia,
 			int cantidadEntradas) {
-		//Verificaciones
-			existeEspectaculo(nombreEspectaculo);
-			existeUsuario(email);
-			verificoUsuario(email, contrasenia);
-			existeFuncion(fecha, nombreEspectaculo);
-		//Creo las entradas y las guardo en la lista
-			List<IEntrada> entradas = new ArrayList<>();
-			for(int i=1; i<=cantidadEntradas;i++){
-				Entrada entradaNueva = new Entrada(espectaculos.get(nombreEspectaculo), fecha, email);
-				entradas.add(entradaNueva);
-				usuarios.get(email).comprarEntrada(entradaNueva);
-			}
-			return entradas;
+		// Verificaciones
+		existeEspectaculo(nombreEspectaculo);
+		existeUsuario(email);
+		verificoUsuario(email, contrasenia);
+		existeFuncion(fecha, nombreEspectaculo);
+		// Creo las entradas y las guardo en la lista
+		List<IEntrada> entradas = new ArrayList<>();
+		for (int i = 1; i <= cantidadEntradas; i++) {
+			Entrada entradaNueva = new Entrada(espectaculos.get(nombreEspectaculo), fecha, email);
+			entradas.add(entradaNueva);
+			usuarios.get(email).comprarEntrada(entradaNueva);
+		}
+		return entradas;
 	}
 
 	@Override
 	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fecha, String email, String contrasenia,
 			String sector, int[] asientos) {
-		//Verificaciones
+		// Verificaciones
 		existeEspectaculo(nombreEspectaculo);
 		existeUsuario(email);
 		verificoUsuario(email, contrasenia);
 		existeFuncion(fecha, nombreEspectaculo);
-		//Creo las entradas y las guardo en la lista
+		// Creo las entradas y las guardo en la lista
 		List<IEntrada> entradas = new ArrayList<>();
-		Sector sectorEntrada = espectaculos.get(nombreEspectaculo).devolverFuncion(fecha).getSede().getSector(sector); //Guardo el sector para la entrada
-		for(int i=0; i<asientos.length;i++){
-			Entrada entradaNueva = new Entrada(espectaculos.get(nombreEspectaculo), fecha, email, sectorEntrada, 2 , asientos[i]); //Solucionar Filas
+		Sector sectorEntrada = espectaculos.get(nombreEspectaculo).devolverFuncion(fecha).getSede().getSector(sector); // Guardo
+																																																										// el
+																																																										// sector
+																																																										// para
+																																																										// la
+																																																										// entrada
+		for (int i = 0; i < asientos.length; i++) {
+			Entrada entradaNueva = new Entrada(espectaculos.get(nombreEspectaculo), fecha, email, sectorEntrada, 2,
+					asientos[i]); // Solucionar Filas
 			entradas.add(entradaNueva);
 			usuarios.get(email).comprarEntrada(entradaNueva);
 		}
@@ -132,8 +137,23 @@ public class Ticketek implements ITicketek{
 
 	@Override
 	public String listarFunciones(String nombreEspectaculo) {
-		// TODO Auto-generated method stub
-		return null;
+		if (!this.espectaculos.containsKey(nombreEspectaculo)) {
+			throw new RuntimeException("Espectaculo no encontrado");
+		}
+
+		Map<Fecha, Funcion> funcionesPorEspectaculo = this.espectaculos.get(nombreEspectaculo).funciones;
+		Iterator<Funcion> f = funcionesPorEspectaculo.values().iterator();
+		StringBuilder sb = new StringBuilder();
+
+		while (f.hasNext()) {
+			sb.append(f.next());
+			
+			if (f.hasNext()) {
+				sb.append("\n");
+			}
+		}
+
+		return sb.toString();
 	}
 
 	@Override
@@ -195,32 +215,37 @@ public class Ticketek implements ITicketek{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	private void existeUsuario (String mail){ //Verifico si existe el usuario con dicho mail
-		if (usuarios.containsKey(mail)){
+
+	private void existeUsuario(String mail) { // Verifico si existe el usuario con dicho mail
+		if (usuarios.containsKey(mail)) {
 			return;
-		}else{
+		} else {
 			throw new RuntimeException("No existe usuario con ese mail");
 		}
 	}
-		private void verificoUsuario (String mail, String contrasenia){ //Verifico si la contraseña es correcta
-		if (usuarios.get(mail).obtenerContrasenia().equals(contrasenia)){
+
+	private void verificoUsuario(String mail, String contrasenia) { // Verifico si la contraseña es correcta
+		if (usuarios.get(mail).obtenerContrasenia().equals(contrasenia)) {
 			return;
-		}else{
+		} else {
 			throw new RuntimeException("La contraseña es incorrecta");
 		}
 	}
-		private void existeEspectaculo (String nombre){ //Verifico si existe el espectaculo
-		if (espectaculos.containsKey(nombre)){
+
+	private void existeEspectaculo(String nombre) { // Verifico si existe el espectaculo
+		if (espectaculos.containsKey(nombre)) {
 			return;
-		}else{
+		} else {
 			throw new RuntimeException("No existe espectaculo con ese nombre");
 		}
 	}
-		private void existeFuncion (String fecha, String nombreEspectaculo){//Verifico si existe la funcion para dicho espectaculo
+
+	private void existeFuncion(String fecha, String nombreEspectaculo) {// Verifico si existe la funcion para dicho
+																																			// espectaculo
 		Fecha fechaFuncion = new Fecha(fecha);
-		if (espectaculos.get(nombreEspectaculo).funciones.containsKey(fechaFuncion)){
+		if (espectaculos.get(nombreEspectaculo).funciones.containsKey(fechaFuncion)) {
 			return;
-		}else{
+		} else {
 			throw new RuntimeException("No existe una funcion en esa fecha");
 		}
 	}
