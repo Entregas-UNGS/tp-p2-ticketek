@@ -6,7 +6,8 @@ public class Ubicacion {
  private Integer asiento;
  //CONSTRUCTOR
  public Ubicacion (Sector sector, int fila, int asiento){
-	 //COMPLETAR
+	this.sector = sector;
+	this.asiento = asiento;
  }
 //OPERACIONES
  

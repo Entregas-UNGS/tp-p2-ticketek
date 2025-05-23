@@ -60,7 +60,7 @@ public class Usuario {
 	}
 
 	public String obtenerContrasenia() {
-		return contrasenia;
+		return this.contrasenia;
 	}
 //
 //	public String obtenerNombre() {

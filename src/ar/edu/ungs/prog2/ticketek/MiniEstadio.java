@@ -11,4 +11,12 @@ public class MiniEstadio extends Sede{
 		this.cantPuestos=cantidadPuestos;
 		super.crearSectores(sectores, capacidad, porcentajeAdicional);
 	}
+	//GETTERS
+	public double getValorConsumision() {
+		return valorConsumision;
+	}
+
+	public Integer getCantPuestos() {
+		return cantPuestos;
+	}
 }

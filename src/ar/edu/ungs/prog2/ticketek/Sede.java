@@ -14,6 +14,7 @@ public abstract class Sede {
 		this.nombre = nombre;
 		this.direccion = direccion;
 		this.capacidadMaxima = capacidadMaxima;
+		this.sectores= new ArrayList<Sector>();
 	}
 
 	public Sede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
@@ -59,5 +60,12 @@ public abstract class Sede {
 	public ArrayList<Sector> getSectores() {
 		return sectores;
 	}
-	
+	public Sector getSector(String nombreSector) {
+	for (Sector sector : sectores) {
+        if (sector.getNombre().equals(nombreSector)) {
+            return sector;
+        }
+    }
+    throw new RuntimeException("No Existe dicho secto");
+	}
 }

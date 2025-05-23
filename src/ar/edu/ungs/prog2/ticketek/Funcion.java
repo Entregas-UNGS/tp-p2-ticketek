@@ -4,14 +4,14 @@ import java.util.HashMap;
 
 public class Funcion {
 	private Fecha Fecha;
-	private String nombreSede;
+	private Sede Sede;
 	private double precioBase;
 	HashMap <String, Ubicacion> asientosOucpados;
 	
 	//CONSTRUCTOR
-	public Funcion(String Fecha, String nombreSede, double precioBase) {
-		this.Fecha.parsearFormatoDMY(Fecha);
-		this.nombreSede=nombreSede;
+	public Funcion(String fecha, Sede sede, double precioBase) {
+		this.Fecha = new Fecha(fecha);
+		this.Sede = sede;
 		this.precioBase=precioBase;
 	}
 	
@@ -28,8 +28,8 @@ public class Funcion {
 		return Fecha;
 	}
 
-	public String getNombreSede() {
-		return nombreSede;
+	public Sede getSede() {
+		return Sede;
 	}
 
 	public double getPrecioBase() {

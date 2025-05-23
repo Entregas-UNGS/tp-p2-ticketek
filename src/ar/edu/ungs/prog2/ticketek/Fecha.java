@@ -1,16 +1,17 @@
 package ar.edu.ungs.prog2.ticketek;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 
 public class Fecha {
 	private LocalDate fecha;
-	private final String SEPARADOR_ISO = "-";
-	private final String SEPARADOR_DMY = "/";
 
 	public Fecha(String entrada) {
-		this.fecha = formatearFecha(entrada);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
+  		LocalDate fechadate= LocalDate.parse(entrada, formatter);
+		this.fecha = fechadate;
 	}
 
 	public static Fecha actual() {
@@ -24,51 +25,6 @@ public class Fecha {
 	public int diasDesde(Fecha inicio) {
 		// TODO
 		return 0;
-	}
-
-	private LocalDate formatearFecha(String fechaIngresada) {
-		if (tieneSeparadorISO(fechaIngresada)) {
-			return parsearFormatoISO(fechaIngresada);
-		}
-
-		if (tieneSeparadorDMY(fechaIngresada)) {
-			return parsearFormatoDMY(fechaIngresada);
-		}
-
-		throw new RuntimeException("Fecha con formato incorrecto");
-	}
-
-	private LocalDate parsearFormatoISO(String fechaEntrada) {
-		String[] fechaSeparada = fechaEntrada.split(SEPARADOR_ISO);
-
-		if (fechaSeparada[0].length() != 4) { // Verifico que el año tenga solamente 4 digitos
-			throw new RuntimeException("Fecha con formato incorrecto");
-		}
-
-		return LocalDate.parse(fechaEntrada);
-	}
-
-	public LocalDate parsearFormatoDMY(String fechaEntrada) {
-		String[] fechaSeparada = fechaEntrada.split(SEPARADOR_DMY);
-
-		if (fechaSeparada[2].length() != 2) { // Verifico que el año tenga solamente 2 digitos
-			throw new RuntimeException("Fecha con formato incorrecto");
-		}
-
-		int dia = Integer.parseInt(fechaSeparada[0]);
-		int mes = Integer.parseInt(fechaSeparada[1]);
-		int anio = Integer.parseInt(fechaSeparada[2]);
-		anio += 2000; // asumo años después del 2000
-
-		return LocalDate.of(anio, mes, dia);
-	}
-
-	private boolean tieneSeparadorISO(String fecha) {
-		return fecha.contains(SEPARADOR_ISO);
-	}
-
-	private boolean tieneSeparadorDMY(String fecha) {
-		return fecha.contains(SEPARADOR_DMY);
 	}
 
 	@Override
