@@ -113,22 +113,16 @@ public class Ticketek implements ITicketek {
 	@Override
 	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fecha, String email, String contrasenia,
 			String sector, int[] asientos) {
-		// Verificaciones
+		//Verificaciones
 		existeEspectaculo(nombreEspectaculo);
 		existeUsuario(email);
 		verificoUsuario(email, contrasenia);
 		existeFuncion(fecha, nombreEspectaculo);
-		// Creo las entradas y las guardo en la lista
+		//Creo las entradas y las guardo en la lista
 		List<IEntrada> entradas = new ArrayList<>();
-		Sector sectorEntrada = espectaculos.get(nombreEspectaculo).devolverFuncion(fecha).getSede().getSector(sector); // Guardo
-																																																										// el
-																																																										// sector
-																																																										// para
-																																																										// la
-																																																										// entrada
-		for (int i = 0; i < asientos.length; i++) {
-			Entrada entradaNueva = new Entrada(espectaculos.get(nombreEspectaculo), fecha, email, sectorEntrada, 2,
-					asientos[i]); // Solucionar Filas
+		Sector sectorEntrada = espectaculos.get(nombreEspectaculo).devolverFuncion(fecha).getSede().getSector(sector); //Guardo el sector para la entrada
+		for(int i=0; i<asientos.length;i++){
+			Entrada entradaNueva = new Entrada(espectaculos.get(nombreEspectaculo), fecha, email, sectorEntrada, 2 , asientos[i]); //Solucionar Filas
 			entradas.add(entradaNueva);
 			usuarios.get(email).comprarEntrada(entradaNueva);
 		}
@@ -147,7 +141,7 @@ public class Ticketek implements ITicketek {
 
 		while (f.hasNext()) {
 			sb.append(f.next());
-			
+
 			if (f.hasNext()) {
 				sb.append("\n");
 			}
@@ -224,12 +218,18 @@ public class Ticketek implements ITicketek {
 		}
 	}
 
-	private void verificoUsuario(String mail, String contrasenia) { // Verifico si la contraseña es correcta
-		if (usuarios.get(mail).obtenerContrasenia().equals(contrasenia)) {
-			return;
-		} else {
-			throw new RuntimeException("La contraseña es incorrecta");
+	private boolean verificoUsuario(String mail, String contrasenia) { // Verifico si la contraseña es correcta
+		boolean usuarioValido = false;
+
+		if (usuarios.containsKey(mail)) {
+			Usuario u = this.usuarios.get(mail);
+
+			if (!contrasenia.equals(u.obtenerContrasenia())) {
+				usuarioValido = true;
+			}
 		}
+
+		return usuarioValido;
 	}
 
 	private void existeEspectaculo(String nombre) { // Verifico si existe el espectaculo
