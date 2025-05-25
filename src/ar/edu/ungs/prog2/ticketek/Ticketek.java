@@ -102,8 +102,10 @@ public class Ticketek implements ITicketek {
 		existeFuncion(fecha, nombreEspectaculo);
 		// Creo las entradas y las guardo en la lista
 		List<IEntrada> entradas = new ArrayList<>();
+		Fecha fechaEntrada = new Fecha(fecha);
+		Sector sectorEstadio = espectaculos.get(nombreEspectaculo).getFunciones().get(fechaEntrada).getSede().DevolverSector(0);
 		for (int i = 1; i <= cantidadEntradas; i++) {
-			Entrada entradaNueva = new Entrada(espectaculos.get(nombreEspectaculo), fecha, email);
+			Entrada entradaNueva = new Entrada(espectaculos.get(nombreEspectaculo), fecha, email, sectorEstadio);
 			entradas.add(entradaNueva);
 			usuarios.get(email).comprarEntrada(entradaNueva);
 		}
@@ -173,14 +175,20 @@ public class Ticketek implements ITicketek {
 	@Override
 	public List<IEntrada> listarEntradasFuturas(String email, String contrasenia) {
 		Usuario u = usuarios.get(email);
+		if(contrasenia.equals(u.obtenerContrasenia())){
+			return u.obtenerEntradasFuturas();
+		}
+		throw new RuntimeException("La Contraseña es incorrecta");
 		
-		return u.obtenerEntradasFuturas();
 	}
 
 	@Override
 	public List<IEntrada> listarTodasLasEntradasDelUsuario(String email, String contrasenia) {
-		// TODO Auto-generated method stub
-		return null;
+		Usuario u = usuarios.get(email);
+				if(contrasenia.equals(u.obtenerContrasenia())){
+			return u.obtenerTodasLasEntradas();
+		}
+		throw new RuntimeException("La Contraseña es incorrecta");
 	}
 
 	@Override

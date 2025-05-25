@@ -59,27 +59,6 @@ public abstract class Sede {
 		// COMPLETAR
 	}
 
-	// GETTERS
-	public String getTipo() {
-		return tipo;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public String getDireccion() {
-		return direccion;
-	}
-
-	public Integer getCapacidadMaxima() {
-		return capacidadMaxima;
-	}
-
-	public ArrayList<Sector> getSectores() {
-		return sectores;
-	}
-
 	public Sector getSector(String nombreSector) {
 		for (Sector sector : sectores) {
 			if (sector.getNombre().equals(nombreSector)) {
@@ -102,5 +81,33 @@ public abstract class Sede {
    		} else {
         	throw new RuntimeException("Indice Fuera de rango");
     	}
+	}
+	@Override
+	//Teatro San Martín
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.getClass());
+		sb.append(" ").append(this.nombre);
+		return sb.toString();
+	}
+		// GETTERS
+	public String getTipo() {
+		return tipo;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public Integer getCapacidadMaxima() {
+		return capacidadMaxima;
+	}
+
+	public ArrayList<Sector> getSectores() {
+		return sectores;
 	}
 }

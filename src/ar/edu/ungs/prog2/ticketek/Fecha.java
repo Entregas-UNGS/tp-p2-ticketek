@@ -24,6 +24,10 @@ public class Fecha implements Comparable<Fecha> {
 		return this.fecha.isAfter(otro.fecha);
 	}
 
+	public boolean esAnterior(Fecha otro) {
+		return this.fecha.isBefore(otro.fecha);
+	}
+
 	public int diasDesde(Fecha inicio) {
 		// TODO
 		return 0;

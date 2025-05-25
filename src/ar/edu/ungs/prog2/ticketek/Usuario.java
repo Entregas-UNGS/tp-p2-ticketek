@@ -29,7 +29,7 @@ public class Usuario {
 	public Usuario() {
 	}
 
-	public void comprarEntrada(IEntrada entrada) {
+	public void comprarEntrada(Entrada entrada) {
 		this.entradas.add(entrada);
 	};
 

@@ -8,12 +8,13 @@ public class Entrada implements IEntrada {
 	private double precio;
 	private String emailUsuario;
 
-	public Entrada(Espectaculo espectaculo, String fecha, String email) {
+	public Entrada(Espectaculo espectaculo, String fecha, String email , Sector sector) {
 		this.espectaculo=espectaculo;
 		this.funcion = espectaculo.devolverFuncion(fecha);
 		this.codigo = Codigo.generar();
 		this.emailUsuario = email;
 		this.precio=precio();
+		Ubicacion ubicacion = new Ubicacion(sector);
 	}
 
 	public Entrada(Espectaculo espectaculo, String fecha,String email, Sector sector, int asiento ) { //SobreCarga
@@ -79,16 +80,22 @@ public class Entrada implements IEntrada {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-    sb.append(this.codigo)
+	//- 7196 - Coldplay en vivo - 30/04/2025 P - La bombonera - CAMPO
+	Fecha fechaActual = Fecha.actual();
+	StringBuilder sb = new StringBuilder();
+    sb.append(" - ")
+	  .append(this.codigo)
       .append(" - ")
-      .append(this.espectaculo)
+      .append(this.espectaculo.getNombre())
       .append(" - ")
-      .append(this.funcion.ObtenerFecha())
-      .append(" - ")
-      .append(this.funcion.getSede())
-      .append(" - ")
-      .append(this.ubicacion);
+      .append(this.funcion.ObtenerFecha());
+	  if(funcion.ObtenerFecha().esAnterior(fechaActual)){
+		 sb.append(" P - ");
+	  }
+      sb.append(this.funcion.getSede().toString());
+	  if (this.ubicacion !=null) {
+		sb.append(" - ").append(this.ubicacion.toString());
+	  }
     return sb.toString();
 	}
 }
