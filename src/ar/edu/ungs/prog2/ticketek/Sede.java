@@ -86,4 +86,8 @@ public abstract class Sede {
 		}
 		throw new RuntimeException("No Existe dicho secto");
 	}
+
+	public String toString() {
+		return this.nombre;
+	}
 }

@@ -1,6 +1,5 @@
 package ar.edu.ungs.prog2.ticketek;
 
-
 public class Entrada implements IEntrada {
 	private final String codigo;
 	private Espectaculo espectaculo;
@@ -79,4 +78,18 @@ public class Entrada implements IEntrada {
 		this.emailUsuario = emailUsuario;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+    sb.append(this.codigo)
+      .append(" - ")
+      .append(this.espectaculo)
+      .append(" - ")
+      .append(this.funcion.ObtenerFecha())
+      .append(" - ")
+      .append(this.funcion.getSede())
+      .append(" - ")
+      .append(this.ubicacion);
+    return sb.toString();
+	}
 }
