@@ -19,6 +19,7 @@ public class Entrada implements IEntrada {
 
 	public Entrada(Espectaculo espectaculo, String fecha,String email, Sector sector, int asiento ) { //SobreCarga
 		this.espectaculo=espectaculo;
+		this.emailUsuario = email;
 		this.funcion = espectaculo.devolverFuncion(fecha);
 		Ubicacion ubicacion = new Ubicacion(sector, asiento);
 		this.ubicacion = ubicacion;
@@ -44,6 +45,13 @@ public class Entrada implements IEntrada {
 		return this.ubicacion.toString();
 	}
 
+	public void anularEntrada(){ //Se encarga de desocupar el asiento para que lo pueda ocupar alguien mas
+		if(!(this.funcion.getSede() instanceof EstadioDeFutbol)){
+			Sector sector = ubicacion.getSector();
+			boolean[] asientos = funcion.asientosOucpados.get(sector);
+			asientos[ubicacion.getAsiento()] = false;
+		}
+	}
 	// Operaciones
 
 	public void cambiarSedeYFuncion(Funcion nuevaFuncion) {
@@ -76,6 +84,9 @@ public class Entrada implements IEntrada {
 
 	public void setEmailUsuario(String emailUsuario) {
 		this.emailUsuario = emailUsuario;
+	}
+	public String getCodigo(){
+		return this.codigo;
 	}
 
 	@Override

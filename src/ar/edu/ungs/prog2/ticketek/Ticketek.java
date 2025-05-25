@@ -101,15 +101,15 @@ public class Ticketek implements ITicketek {
 		verificoUsuario(email, contrasenia);
 		existeFuncion(fecha, nombreEspectaculo);
 		// Creo las entradas y las guardo en la lista
-		List<IEntrada> entradas = new ArrayList<>();
+		List<IEntrada> entradasEnlistadas = new ArrayList<>();
 		Fecha fechaEntrada = new Fecha(fecha);
 		Sector sectorEstadio = espectaculos.get(nombreEspectaculo).getFunciones().get(fechaEntrada).getSede().DevolverSector(0);
 		for (int i = 1; i <= cantidadEntradas; i++) {
 			Entrada entradaNueva = new Entrada(espectaculos.get(nombreEspectaculo), fecha, email, sectorEstadio);
-			entradas.add(entradaNueva);
+			entradasEnlistadas.add(entradaNueva);
 			usuarios.get(email).comprarEntrada(entradaNueva);
 		}
-		return entradas;
+		return entradasEnlistadas;
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class Ticketek implements ITicketek {
 		verificoUsuario(email, contrasenia);
 		existeFuncion(fecha, nombreEspectaculo);
 		// Creo las entradas y las guardo en la lista
-		List<IEntrada> entradas = new ArrayList<>();
+		List<IEntrada> entradasEnlistadas = new ArrayList<>();
 		Sector sectorEntrada = espectaculos.get(nombreEspectaculo).devolverFuncion(fecha).getSede().getSector(sector); // Guardo
 																																																										// el
 																																																										// sector
@@ -133,7 +133,7 @@ public class Ticketek implements ITicketek {
 			if (funcionEntrada.verificarDisponibilidad(sectorEntrada, asientos[i])) {
 				Entrada entradaNueva = new Entrada(espectaculos.get(nombreEspectaculo), fecha, email, sectorEntrada,
 						asientos[i]); // Solucionar Filas
-				entradas.add(entradaNueva);
+				entradasEnlistadas.add(entradaNueva);
 				usuarios.get(email).comprarEntrada(entradaNueva);
 				funcionEntrada.ocuparAsiento(sectorEntrada, asientos[i]);
 			}
@@ -141,7 +141,7 @@ public class Ticketek implements ITicketek {
 			// comprando las otras del arreglo que si cumplen
 			// lo requerido
 		}
-		return entradas;
+		return entradasEnlistadas;
 	}
 
 @Override
@@ -193,8 +193,17 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public boolean anularEntrada(IEntrada entrada, String contrasenia) {
-		// TODO Auto-generated method stub
-		return false;
+		if(entrada != null){
+			Entrada entradaActual = (Entrada) entrada; //Casting down
+			String email = entradaActual.getEmailUsuario();
+			if(usuarios.containsKey(email)){
+				Usuario u = usuarios.get(email);
+				entradaActual.anularEntrada();
+				return u.anularEntrada(entradaActual, contrasenia);
+			}
+			return false;
+		}
+		throw new RuntimeException("La entrada ingresada es vacia");
 	}
 
 	@Override

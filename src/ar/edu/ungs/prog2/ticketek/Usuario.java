@@ -1,7 +1,9 @@
 package ar.edu.ungs.prog2.ticketek;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class Usuario {
@@ -9,7 +11,7 @@ public class Usuario {
 	private String contrasenia;
 	private String nombre;
 	private String apellido;
-	private List<IEntrada> entradas;
+	private Map<String, IEntrada> entradas;
 
 	/**
 	 * @param email
@@ -23,25 +25,25 @@ public class Usuario {
 		this.contrasenia = contrasenia;
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.entradas = new ArrayList<>();
+		this.entradas = new HashMap<>();
 	}
 
 	public Usuario() {
 	}
 
 	public void comprarEntrada(Entrada entrada) {
-		this.entradas.add(entrada);
+		entradas.put(entrada.getCodigo(), entrada);
 	};
 
 	public List<IEntrada> obtenerTodasLasEntradas() {
-		return new ArrayList<>(this.entradas);
+		return new ArrayList<>(entradas.values());
 	}
 
 	public List<IEntrada> obtenerEntradasFuturas() {
 		Fecha fechaActual = Fecha.actual();
 		List<IEntrada> entradasFuturas = new ArrayList<>();
 
-		for (IEntrada entrada : this.entradas) {
+		for (IEntrada entrada : entradas.values()) {
 			if (entrada instanceof Entrada) {
 				Entrada e = (Entrada) entrada;
 
@@ -51,6 +53,17 @@ public class Usuario {
 			}
 		}
 		return entradasFuturas;
+	}
+	public boolean anularEntrada(Entrada entrada, String c){
+		if(c.equals(this.contrasenia)){
+			if(entradas.containsKey(entrada.getCodigo())){
+				entradas.remove(entrada.getCodigo(), entrada);
+				return true;
+			}
+			throw new RuntimeException("La entrada no existe");
+		}
+		throw new RuntimeException("Contraseña incorrecta");
+
 	}
 
 	// Getters
