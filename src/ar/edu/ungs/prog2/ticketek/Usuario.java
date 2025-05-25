@@ -41,7 +41,7 @@ public class Usuario {
 		Fecha fechaActual = Fecha.actual();
 		List<IEntrada> entradasFuturas = new ArrayList<>();
 
-		for (IEntrada entrada : entradas) {
+		for (IEntrada entrada : this.entradas) {
 			if (entrada instanceof Entrada) {
 				Entrada e = (Entrada) entrada;
 

@@ -15,7 +15,9 @@ public class Fecha implements Comparable<Fecha> {
 	}
 
 	public static Fecha actual() {
-		return new Fecha(LocalDate.now().toString());
+    	DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yy");
+    	String hoy = LocalDate.now().format(formato);
+    	return new Fecha(hoy);
 	}
 
 	public boolean esPosterior(Fecha otro) {
