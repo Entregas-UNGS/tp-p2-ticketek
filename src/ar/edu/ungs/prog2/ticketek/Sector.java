@@ -5,13 +5,19 @@ public class Sector {
 	private Integer filas;
 	private Integer asientosPorFila;
 	private Integer adicionalAlSector;
+	private int capacidad;
 	
 	//CONSTRUCTOR
-	public Sector(String nombre, int asientosPorFila , int adicionalAlSector) {
+	public Sector(String nombre, int capacidad, int asientosPorFila, int adicionalAlSector) {
 	  this.nombre = nombre;
     this.asientosPorFila = asientosPorFila;
     this.adicionalAlSector = adicionalAlSector;
-		
+	}
+	
+	public Sector(String nombre, int capacidad, int adicionalAlSector) {
+		this.nombre = nombre;
+		this.capacidad = capacidad;
+   		this.adicionalAlSector = adicionalAlSector;
 	}
 	
 	public int capacidad() {
@@ -19,6 +25,10 @@ public class Sector {
 	}
 	
 //GETTERS----------------------------------------------------------------------------------------
+	public int getCapacidad() {
+		return this.capacidad;
+	}
+	
 	public String getNombre() {
 		return this.nombre;
 	}

@@ -17,10 +17,10 @@ public class Entrada implements IEntrada {
 		this.precio=precio();
 	}
 
-	public Entrada(Espectaculo espectaculo, String fecha,String email, Sector sector, int fila, int asiento ) { //SobreCarga
+	public Entrada(Espectaculo espectaculo, String fecha,String email, Sector sector, int asiento ) { //SobreCarga
 		this.espectaculo=espectaculo;
 		this.funcion = espectaculo.devolverFuncion(fecha);
-		Ubicacion ubicacion = new Ubicacion(sector, fila, asiento);
+		Ubicacion ubicacion = new Ubicacion(sector, asiento);
 		this.ubicacion = ubicacion;
 		this.codigo = Codigo.generar();
 		this.precio=precio();

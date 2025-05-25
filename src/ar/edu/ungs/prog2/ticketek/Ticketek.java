@@ -121,10 +121,16 @@ public class Ticketek implements ITicketek {
 		//Creo las entradas y las guardo en la lista
 		List<IEntrada> entradas = new ArrayList<>();
 		Sector sectorEntrada = espectaculos.get(nombreEspectaculo).devolverFuncion(fecha).getSede().getSector(sector); //Guardo el sector para la entrada
+		Funcion funcionEntrada = espectaculos.get(nombreEspectaculo).devolverFuncion(fecha);
 		for(int i=0; i<asientos.length;i++){
-			Entrada entradaNueva = new Entrada(espectaculos.get(nombreEspectaculo), fecha, email, sectorEntrada, 2 , asientos[i]); //Solucionar Filas
+			if(funcionEntrada.verificarDisponibilidad(sectorEntrada, asientos[i])){
+			Entrada entradaNueva = new Entrada(espectaculos.get(nombreEspectaculo), fecha, email, sectorEntrada, asientos[i]); //Solucionar Filas
 			entradas.add(entradaNueva);
 			usuarios.get(email).comprarEntrada(entradaNueva);
+			funcionEntrada.ocuparAsiento(sectorEntrada, asientos[i]);
+			}
+			//En caso de que una entrada no cumpla simplemente no se compra, pero sigue comprando las otras del arreglo que si cumplen
+			//lo requerido
 		}
 		return entradas;
 	}

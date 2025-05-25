@@ -9,7 +9,7 @@ public class MiniEstadio extends Sede{
 		super(nombre, direccion, capacidadMaxima);
 		this.valorConsumision=precioConsumicion;
 		this.cantPuestos=cantidadPuestos;
-		super.crearSectores(sectores, capacidad, porcentajeAdicional);
+		super.crearSectores(sectores, capacidad, asientosPorFila, porcentajeAdicional);
 	}
 	//GETTERS
 	public double getValorConsumision() {
