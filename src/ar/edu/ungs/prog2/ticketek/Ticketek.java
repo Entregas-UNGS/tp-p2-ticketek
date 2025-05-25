@@ -142,25 +142,26 @@ public class Ticketek implements ITicketek {
 		return entradas;
 	}
 
-	@Override
+@Override
 	public String listarFunciones(String nombreEspectaculo) {
 		if (!this.espectaculos.containsKey(nombreEspectaculo)) {
 			throw new RuntimeException("Espectaculo no encontrado");
 		}
 
 		Map<Fecha, Funcion> funcionesPorEspectaculo = this.espectaculos.get(nombreEspectaculo).funciones;
-		Iterator<Funcion> f = funcionesPorEspectaculo.values().iterator();
+		List<Fecha> fechas = new ArrayList<>(funcionesPorEspectaculo.keySet()); //Guardo las fechas para darles orden
+		fechas.sort(null); //Ordeno las fechas
+
 		StringBuilder sb = new StringBuilder();
 
-		while (f.hasNext()) {
-			sb.append(f.next());
-
-			if (f.hasNext()) {
+		for (int i = 0; i < fechas.size(); i++) {
+			Funcion funcion = funcionesPorEspectaculo.get(fechas.get(i)); //Llamo a la funcion en orden cronologico segun la lista ordenada
+			sb.append(funcion.toString()); //Agrego la funcion al String Builder
+			if (i < fechas.size()) { //Si no es el ultimo indice hago un salto de linea
 				sb.append("\n");
 			}
 		}
-
-		return sb.toString();
+		return sb.toString(); //Returno el String con las funciones ordenadas
 	}
 
 	@Override

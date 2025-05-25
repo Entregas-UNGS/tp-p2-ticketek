@@ -10,6 +10,7 @@ public class Sector {
 	//CONSTRUCTOR
 	public Sector(String nombre, int capacidad, int asientosPorFila, int adicionalAlSector) {
 	  this.nombre = nombre;
+	  this.capacidad = capacidad;
     this.asientosPorFila = asientosPorFila;
     this.adicionalAlSector = adicionalAlSector;
 	}

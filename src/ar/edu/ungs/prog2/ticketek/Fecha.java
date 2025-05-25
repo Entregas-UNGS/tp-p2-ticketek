@@ -5,13 +5,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 
-public class Fecha {
+public class Fecha implements Comparable<Fecha> {
 	private LocalDate fecha;
 
 	public Fecha(String entrada) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
-  		LocalDate fechadate= LocalDate.parse(entrada, formatter);
-		this.fecha = fechadate;
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yy");
+  		LocalDate nuevoDate= LocalDate.parse(entrada, formato);
+		this.fecha = nuevoDate;
 	}
 
 	public static Fecha actual() {
@@ -51,4 +51,8 @@ public class Fecha {
 	public int hashCode() {
 		return Objects.hash(fecha);
 	}
+    @Override
+    public int compareTo (Fecha otra) { //Hago un override para poder usar sort a la hora de ordenar las funciones para enlistarlas
+		return this.fecha.compareTo(otra.fecha);
+    }
 }

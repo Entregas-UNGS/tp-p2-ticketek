@@ -46,28 +46,34 @@ public class Funcion {
 		return precioBase;
 	}
 //GETTERS --------------------------
-
+ //" - (25/07/25) Microestadio Sur - VIP: 0/50 | Comun: 0/100 | Baja: 0/150 | Alta: 0/200\n"
 	//METODOS
 	@Override
-	public String toString() {
+	public String toString(){
 		StringBuilder sb = new StringBuilder();
-
-		return this.getSede() instanceof EstadioDeFutbol
-				? sb.append("(")
-						.append(fecha).append(") ")
-						.append(this.sede.getNombre()).append(" - ")
-						.append("100").append(" / ").append("500")
-						.toString()
-						
-					//Platea VIP: Entradas Vendidas / Capacidad total
-				: sb.append("(")
-						.append(fecha).append(") ")
-						.append(this.sede.getNombre()).append(" - ")
-						.append("Platea VIP: ").append("30").append(" / ").append("50")
-						.append(" | Platea Común: ").append("30").append(" / ").append("50")
-						.append(" | Platea Baja: ").append("30").append(" / ").append("50")
-						.append(" | Platea Alta: ").append("30").append(" / ").append("50")
-						.toString();
+			sb.append(" - (");
+			sb.append(fecha.toString());
+			sb.append(") ").append(sede.getNombre());
+			sb.append((" - "));
+		for(int i = 0; i<this.sede.sectores.size(); i++){
+			sb.append(this.sede.NombreDelSector(i)).append(": ");
+			sb.append(calcularCapacidadOcupada(this.sede.DevolverSector(i)));
+			sb.append("/").append(this.sede.DevolverSector(i).getCapacidad());
+			if(!(this.sede instanceof EstadioDeFutbol) && i != this.sede.sectores.size()-1){
+				sb.append(" | ");
+			}
+		}
+		return sb.toString();
+	}
+	public String calcularCapacidadOcupada (Sector s){
+		int cantidadOcupada = 0;
+		boolean[] array = asientosOucpados.get(s);
+		for(int i =0 ; i<array.length ; i++ ){
+			if (array[i] == true){
+				cantidadOcupada++;
+			}
+		}
+		return ""+cantidadOcupada;
 	}
 
 

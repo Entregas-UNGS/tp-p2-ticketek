@@ -2,6 +2,8 @@ package ar.edu.ungs.prog2.ticketek;
 
 import java.util.ArrayList;
 
+import javax.management.RuntimeErrorException;
+
 public abstract class Sede {
 	private String tipo;
 	private String nombre;
@@ -87,7 +89,18 @@ public abstract class Sede {
 		throw new RuntimeException("No Existe dicho secto");
 	}
 
-	public String toString() {
-		return this.nombre;
+	public String NombreDelSector(int indice) {
+		if (indice >= 0 && indice < sectores.size()) {
+        	return sectores.get(indice).getNombre();
+   		} else {
+        	throw new RuntimeException("Indice Fuera de rango");
+    	}
+	}
+		public Sector DevolverSector(int indice) {
+		if (indice >= 0 && indice < sectores.size()) {
+        	return sectores.get(indice);
+   		} else {
+        	throw new RuntimeException("Indice Fuera de rango");
+    	}
 	}
 }
