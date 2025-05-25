@@ -40,8 +40,7 @@ public class Entrada implements IEntrada {
 
 	@Override
 	public String ubicacion() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.ubicacion.toString();
 	}
 
 	// Operaciones

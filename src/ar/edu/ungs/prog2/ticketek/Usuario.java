@@ -42,13 +42,12 @@ public class Usuario {
 		List<IEntrada> entradasFuturas = new ArrayList<>();
 
 		for (IEntrada entrada : entradas) {
-			if (!(entrada instanceof Entrada))
-				throw new RuntimeException("Error de tipo: entrada");
+			if (entrada instanceof Entrada) {
+				Entrada e = (Entrada) entrada;
 
-			Entrada e = (Entrada) entrada;
-
-			if (e.obtenerFecha().esPosterior(fechaActual)) {
-				entradasFuturas.add(e);
+				if (e.obtenerFecha().esPosterior(fechaActual)) {
+					entradasFuturas.add(e);
+				}
 			}
 		}
 		return entradasFuturas;

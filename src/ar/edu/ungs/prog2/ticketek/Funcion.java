@@ -1,20 +1,18 @@
 package ar.edu.ungs.prog2.ticketek;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
 public class Funcion {
-	private Fecha Fecha;
-	private Sede Sede;
+	private Fecha fecha;
+	private Sede sede;
 	private double precioBase;
-	HashMap <Sector, boolean[]> asientosOucpados; //Sector, TRUE = OCUPADO, FALSE = DESOCUPADO
+	HashMap<Sector, boolean[]> asientosOucpados; // Sector, TRUE = OCUPADO, FALSE = DESOCUPADO
 
-	
-	//CONSTRUCTOR
+	// CONSTRUCTOR
 	public Funcion(String fecha, Sede sede, double precioBase) {
-		this.Fecha = new Fecha(fecha);
-		this.Sede = sede;
-		this.precioBase=precioBase;
+		this.fecha = new Fecha(fecha);
+		this.sede = sede;
+		this.precioBase = precioBase;
 		this.asientosOucpados = new HashMap<>();
 		for (Sector sector : sede.getSectores()) {
 			int cantidadAsientos = sector.getCapacidad();
@@ -22,30 +20,55 @@ public class Funcion {
 			this.asientosOucpados.put(sector, ocupados);
 		}
 	}
-	
-	//OPERACIONES
+
+	// OPERACIONES
 	public boolean verificarDisponibilidad(Sector sector, int asiento) {
-		if (this.asientosOucpados.get(sector).length > asiento &&this.asientosOucpados.get(sector)[asiento-1] == false){ //Verifico que no este ocupado y que el arreglo permita dicho numero
+		// Verifico que no este ocupado y que el arreglo permita dicho numero
+		if (this.asientosOucpados.get(sector).length > asiento && this.asientosOucpados.get(sector)[asiento - 1] == false) {
 			return true;
 		}
 		return false;
 	}
+
 	public void ocuparAsiento(Sector sector, int asiento) {
-		this.asientosOucpados.get(sector)[asiento-1]=true; //Ocupo el asiento de dicho sector
+		this.asientosOucpados.get(sector)[asiento - 1] = true; // Ocupo el asiento de dicho sector
 	}
 
 	public Fecha ObtenerFecha() {
-		return Fecha;
+		return fecha;
 	}
 
 	public Sede getSede() {
-		return Sede;
+		return sede;
 	}
 
 	public double getPrecioBase() {
 		return precioBase;
 	}
-	
 //GETTERS --------------------------
-	
+
+	//METODOS
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+
+		return this.getSede() instanceof EstadioDeFutbol
+				? sb.append("(")
+						.append(fecha).append(") ")
+						.append(this.sede.getNombre()).append(" - ")
+						.append("100").append(" / ").append("500")
+						.toString()
+						
+					//Platea VIP: Entradas Vendidas / Capacidad total
+				: sb.append("(")
+						.append(fecha).append(") ")
+						.append(this.sede.getNombre()).append(" - ")
+						.append("Platea VIP: ").append("30").append(" / ").append("50")
+						.append(" | Platea Común: ").append("30").append(" / ").append("50")
+						.append(" | Platea Baja: ").append("30").append(" / ").append("50")
+						.append(" | Platea Alta: ").append("30").append(" / ").append("50")
+						.toString();
+	}
+
+
 }
