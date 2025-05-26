@@ -30,6 +30,17 @@ public class Funcion {
 		return false;
 	}
 
+		public boolean verificarDisponibilidad(Sector sector) {
+		// Verifico que no este ocupado y que el arreglo permita dicho numero
+		for(int i = 0; i < asientosOucpados.get(sector).length ; i++){
+			if(asientosOucpados.get(sector)[i] == false){
+				asientosOucpados.get(sector)[i] = true; //Ocupo el asiento
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void ocuparAsiento(Sector sector, int asiento) {
 		this.asientosOucpados.get(sector)[asiento - 1] = true; // Ocupo el asiento de dicho sector
 	}

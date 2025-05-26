@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.management.RuntimeErrorException;
+
 public class Ticketek implements ITicketek {
 
 	private Map<String, Usuario> usuarios;
@@ -106,9 +108,13 @@ public class Ticketek implements ITicketek {
 		Sector sectorEstadio = espectaculos.get(nombreEspectaculo).getFunciones().get(fechaEntrada).getSede()
 				.DevolverSector(0);
 		for (int i = 1; i <= cantidadEntradas; i++) {
+			if(espectaculos.get(nombreEspectaculo).getFunciones().get(fechaEntrada).verificarDisponibilidad(sectorEstadio)){
 			Entrada entradaNueva = new Entrada(espectaculos.get(nombreEspectaculo), fecha, email, sectorEstadio);
 			entradasEnlistadas.add(entradaNueva);
 			usuarios.get(email).comprarEntrada(entradaNueva);
+			}else{
+				throw new RuntimeException("No hay disponibilidad en campo para la entrada");
+			}
 		}
 		return entradasEnlistadas;
 	}
@@ -124,11 +130,11 @@ public class Ticketek implements ITicketek {
 		// Creo las entradas y las guardo en la lista
 		List<IEntrada> entradasEnlistadas = new ArrayList<>();
 		Sector sectorEntrada = espectaculos.get(nombreEspectaculo).devolverFuncion(fecha).getSede().getSector(sector); // Guardo
-																																																										// el
-																																																										// sector
-																																																										// para
-																																																										// la
-																																																										// entrada
+																														// el
+																														// sector
+																														// para
+																														// la
+																														// entrada
 		Funcion funcionEntrada = espectaculos.get(nombreEspectaculo).devolverFuncion(fecha);
 		for (int i = 0; i < asientos.length; i++) {
 			if (funcionEntrada.verificarDisponibilidad(sectorEntrada, asientos[i])) {

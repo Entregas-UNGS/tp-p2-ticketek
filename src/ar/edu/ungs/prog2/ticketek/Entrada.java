@@ -8,7 +8,9 @@ public class Entrada implements IEntrada {
 	private double precio;
 	private String emailUsuario;
 
-	public Entrada(Espectaculo espectaculo, String fecha, String email , Sector sector) {
+	//CONSTRUCTORES
+
+	public Entrada(Espectaculo espectaculo, String fecha, String email , Sector sector) { //SE USA PARA ESTADIO DE FUTBOL, YA QUE NO UTILIZA ASIENTOS
 		this.espectaculo=espectaculo;
 		this.funcion = espectaculo.devolverFuncion(fecha);
 		this.codigo = Codigo.generar();
@@ -19,7 +21,9 @@ public class Entrada implements IEntrada {
 		sumoLoRecaudado(espectaculo, fecha);
 	}
 
-	public Entrada(Espectaculo espectaculo, String fecha,String email, Sector sector, int asiento ) { //SobreCarga
+	//Aca podemos ver como se aplica sobrecarga
+
+	public Entrada(Espectaculo espectaculo, String fecha,String email, Sector sector, int asiento ) { //SE USA PARA TEATRO Y MINI ESTADIO, QUE USAN ASIENTOS
 		this.espectaculo=espectaculo;
 		this.emailUsuario = email;
 		this.funcion = espectaculo.devolverFuncion(fecha);
@@ -29,16 +33,18 @@ public class Entrada implements IEntrada {
 		this.precio=precio();
 		sumoLoRecaudado(espectaculo, fecha);
 	}
+	// OPERACIONES
 
-	@Override
+	@Override 
 	public double precio() {
 		double precioTotal = funcion.getPrecioBase();
-		if (funcion.getSede().getClass().equals(EstadioDeFutbol.class)){ //Si es EstadioDeFutbol no influye en el precio
-			return precioTotal;
+		if (funcion.getSede() instanceof EstadioDeFutbol){ //Si es EstadioDeFutbol no influye en el precio
+			return precioTotal; //El preico del Estadio de futbol no tiene ninguna modificacion
 		}
 		precioTotal= precioTotal*(1+this.ubicacion.getSector().getAdicionalSector()/100.0); // Aumento el porcentaje del adicional Al sector 
-		if (funcion.getSede().getClass().equals(MiniEstadio.class) ){
+		if (funcion.getSede() instanceof MiniEstadio){
 			precioTotal+=((MiniEstadio)funcion.getSede()).getValorConsumision(); //DownCasting
+			//Sumo despues de calcular el porcentaje porque si no se aplica mal el porcentaje
 		}
 		return precioTotal;
 	}
@@ -104,6 +110,31 @@ public class Entrada implements IEntrada {
 		}
 	}
 
+	@Override
+	public String toString() {
+	//Ejemplo de lo que se espera que devuelva
+	//- 7196 - Coldplay en vivo - 30/04/2025 P - La bombonera - CAMPO
+	Fecha fechaActual = Fecha.actual();
+	StringBuilder sb = new StringBuilder();
+    sb.append("- ")
+	  .append(this.codigo)
+      .append(" - ")
+      .append(this.espectaculo.getNombre())
+      .append(" - ")
+      .append(this.funcion.ObtenerFecha().toString());
+	  if(funcion.ObtenerFecha().esAnterior(fechaActual)){
+		 sb.append(" P - ");
+	  }else{
+		sb.append(" - ");
+	  }
+      sb.append(this.funcion.getSede().getNombre());
+	  if (this.ubicacion !=null) {
+		sb.append(" - ").append(this.ubicacion.toString());
+	  }
+    return sb.toString();
+	}
+
+
 	// GETTERS ---------------------------------------------
 	public Fecha obtenerFecha() {
 		return this.funcion.ObtenerFecha();
@@ -133,28 +164,5 @@ public class Entrada implements IEntrada {
 	}
 	public String getCodigo(){
 		return this.codigo;
-	}
-
-	@Override
-	public String toString() {
-	//- 7196 - Coldplay en vivo - 30/04/2025 P - La bombonera - CAMPO
-	Fecha fechaActual = Fecha.actual();
-	StringBuilder sb = new StringBuilder();
-    sb.append("- ")
-	  .append(this.codigo)
-      .append(" - ")
-      .append(this.espectaculo.getNombre())
-      .append(" - ")
-      .append(this.funcion.ObtenerFecha().toString());
-	  if(funcion.ObtenerFecha().esAnterior(fechaActual)){
-		 sb.append(" P - ");
-	  }else{
-		sb.append(" - ");
-	  }
-      sb.append(this.funcion.getSede().getNombre());
-	  if (this.ubicacion !=null) {
-		sb.append(" - ").append(this.ubicacion.toString());
-	  }
-    return sb.toString();
 	}
 }
