@@ -16,6 +16,7 @@ public class Entrada implements IEntrada {
 		this.precio=precio();
 		Ubicacion ubicacion = new Ubicacion(sector);
 		this.ubicacion = ubicacion;
+		sumoLoRecaudado(espectaculo, fecha);
 	}
 
 	public Entrada(Espectaculo espectaculo, String fecha,String email, Sector sector, int asiento ) { //SobreCarga
@@ -26,6 +27,7 @@ public class Entrada implements IEntrada {
 		this.ubicacion = ubicacion;
 		this.codigo = Codigo.generar();
 		this.precio=precio();
+		sumoLoRecaudado(espectaculo, fecha);
 	}
 
 	@Override
@@ -51,6 +53,9 @@ public class Entrada implements IEntrada {
 			Sector sector = ubicacion.getSector();
 			boolean[] asientos = funcion.asientosOucpados.get(sector);
 			asientos[ubicacion.getAsiento()] = false;
+			Espectaculo espectaculo = this.espectaculo;
+			String fecha = this.funcion.ObtenerFecha().toString();
+			RestoALoRecaudado(espectaculo, fecha);
 		}
 	}
 	// Operaciones
@@ -78,8 +83,22 @@ public class Entrada implements IEntrada {
 		}
 		throw new RuntimeException("No existe una funcion para el mismo espectaculo en esa fecha");
 	}
-	public void cambiarSedeYFuncion(Funcion nuevaFuncion) {
-		// COMPLETAR
+	private void sumoLoRecaudado(Espectaculo espectaculo, String fecha) {
+		Sede sede = espectaculo.devolverSedeDeLaFuncion(fecha);
+		if(espectaculo.getRecaudado().containsKey(sede.getNombre())){
+			double totalRecaudado = espectaculo.getRecaudado().get(sede.getNombre()) + precio();
+			espectaculo.getRecaudado().replace(sede.getNombre(), totalRecaudado);
+		}else{
+			espectaculo.getRecaudado().put(sede.getNombre(), precio());
+		}
+	}
+	private void RestoALoRecaudado(Espectaculo espectaculo, String fecha) {
+		Sede sede = espectaculo.devolverSedeDeLaFuncion(fecha);
+		if(espectaculo.getRecaudado().containsKey(sede.getNombre())){
+			double totalRecaudado = espectaculo.getRecaudado().get(sede.getNombre()) - precio();
+			espectaculo.getRecaudado().replace(sede.getNombre(), totalRecaudado);
+		}
+		throw new RuntimeException("No existe una funcion en esta sede");
 	}
 
 	// GETTERS ---------------------------------------------

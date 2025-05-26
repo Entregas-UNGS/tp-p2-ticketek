@@ -262,10 +262,8 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public double costoEntrada(String nombreEspectaculo, String fecha, String sector) {
-		if(espectaculos.containsKey(nombreEspectaculo)){
-			return espectaculos.get(nombreEspectaculo).consultarCostoEntrada(fecha, sector);
-		}
-		throw new RuntimeException("No existe la funcion");
+		existeEspectaculo(nombreEspectaculo);
+		return espectaculos.get(nombreEspectaculo).consultarCostoEntrada(fecha, sector);
 	}
 
 	@Override
@@ -276,8 +274,12 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public double totalRecaudadoPorSede(String nombreEspectaculo, String nombreSede) {
-		// TODO Auto-generated method stub
-		return 0;
+		existeEspectaculo(nombreEspectaculo);
+		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
+		if (espectaculo.getRecaudado().containsKey(nombreSede)){
+			return espectaculo.getRecaudado().get(nombreSede);
+		}
+		throw new RuntimeException("No existe una funcion con esa sede");
 	}
 
 	private void existeUsuario(String mail) { // Verifico si existe el usuario con dicho mail

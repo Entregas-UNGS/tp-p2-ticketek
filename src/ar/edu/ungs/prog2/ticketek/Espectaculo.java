@@ -6,11 +6,13 @@ import java.util.Map;
 public class Espectaculo {
 	private String nombre;
 	public Map<Fecha, Funcion> funciones;
+	public Map<String, Double> recaudado;
 
 	// CONSTRUCTOR
 	public Espectaculo(String nombre) {
 		this.nombre = nombre;
 		funciones = new HashMap<Fecha, Funcion>();
+		recaudado = new HashMap<String, Double>();
 	}
 
 	// OPERACIONES
@@ -19,6 +21,9 @@ public class Espectaculo {
 		if (!funciones.containsKey(date)) { // Chequeo que no haya otra funcion con la misma fecha
 			Funcion nuevaFuncion = new Funcion(fecha, sedeFuncion, precioBase);
 			funciones.put(date, nuevaFuncion); // Guardo la funcion en el diccionario
+			if(!(recaudado.containsKey(sedeFuncion.getNombre()))){
+				recaudado.put(sedeFuncion.getNombre(), 0.0);
+			}
 		} else {
 			throw new RuntimeException("Ya existe una funcion con esa fecha");
 		}
@@ -54,6 +59,9 @@ public class Espectaculo {
 
 	public Map<Fecha, Funcion> getFunciones() {
 		return funciones;
+	}
+		public Map<String, Double> getRecaudado() {
+		return recaudado;
 	}
 
 	public Sede devolverSedeDeLaFuncion(String fecha) {
