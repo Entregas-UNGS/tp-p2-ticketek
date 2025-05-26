@@ -326,4 +326,41 @@ public class Ticketek implements ITicketek {
 			throw new RuntimeException("No existe una funcion en esa fecha");
 		}
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Ticketek:\n");
+		sb.append("Usuarios registrados: ").append(usuarios.size()).append("\n");
+		sb.append("Espectáculos disponibles: ").append(espectaculos.size()).append("\n");
+		sb.append("Sedes disponibles: ").append(sedes.size()).append("\n");
+		return sb.toString();
+	}
+
+//	public static <K, V> String concatenarValores(Map<K, V> mapa) {
+//		StringBuilder sb = new StringBuilder();
+//		Iterator<V> it = mapa.values().iterator();
+//
+//		while (it.hasNext()) {
+//			V valor = it.next();
+//			sb.append(valor.toString()).append(",\n");
+//		}
+//
+//		return sb.toString();
+//	}
+//
+//	@Override
+//	public String toString() {
+//		StringBuilder sb = new StringBuilder();
+//
+//		sb.append("Usuarios registrados:\n");
+//		sb.append(concatenarValores(this.usuarios));
+//		sb.append("\nEspectáculos disponibles:\n");
+//		sb.append(concatenarValores(this.espectaculos));
+//		sb.append("\nSedes disponibles:\n");
+//		sb.append(concatenarValores(this.sedes));
+//
+//		return sb.toString();
+//	}
+
 }
