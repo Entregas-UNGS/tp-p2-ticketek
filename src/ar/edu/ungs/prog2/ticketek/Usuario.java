@@ -58,6 +58,7 @@ public class Usuario {
 		if(c.equals(this.contrasenia)){
 			if(entradas.containsKey(entrada.getCodigo())){
 				entradas.remove(entrada.getCodigo(), entrada);
+				entrada = null;
 				return true;
 			}
 			throw new RuntimeException("La entrada no existe");

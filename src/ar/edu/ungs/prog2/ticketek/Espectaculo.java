@@ -24,8 +24,27 @@ public class Espectaculo {
 		}
 	}
 
-	public void ocuparAsiento(Sector sector, int fila, int asiento) {
-		// COMPLETAR
+	public double consultarCostoEntrada(String fecha) {
+		Fecha dateFecha = new Fecha (fecha);
+		if(funciones.containsKey(dateFecha)){
+			return this.funciones.get(dateFecha).getPrecioBase();
+		}
+		throw new RuntimeException("No existe una funcion con esa fecha");
+	}
+		public double consultarCostoEntrada(String fecha, String sector) {
+		double precioTotal = 0;
+		Fecha dateFecha = new Fecha (fecha);
+		if(funciones.containsKey(dateFecha)){
+			Funcion funcion = this.funciones.get(dateFecha);
+			Sede sede= funcion.getSede();
+			precioTotal = funcion.getPrecioBase();
+			if (sede.getClass().equals(MiniEstadio.class)){
+				precioTotal += ((MiniEstadio)sede).getValorConsumision();
+			}
+			precioTotal = precioTotal * (1+sede.getSector(sector).getAdicionalSector()/100.0);
+			return precioTotal;
+		}
+		throw new RuntimeException("No existe una funcion con esa fecha");
 	}
 //GETTERS -------------------------------
 

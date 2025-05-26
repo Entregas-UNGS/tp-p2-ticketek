@@ -86,7 +86,7 @@ public abstract class Sede {
 	//Teatro San Martín
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.getClass());
+		sb.append(this.getClass().getSimpleName());
 		sb.append(" ").append(this.nombre);
 		return sb.toString();
 	}

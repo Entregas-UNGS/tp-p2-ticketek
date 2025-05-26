@@ -15,6 +15,7 @@ public class Entrada implements IEntrada {
 		this.emailUsuario = email;
 		this.precio=precio();
 		Ubicacion ubicacion = new Ubicacion(sector);
+		this.ubicacion = ubicacion;
 	}
 
 	public Entrada(Espectaculo espectaculo, String fecha,String email, Sector sector, int asiento ) { //SobreCarga
@@ -30,10 +31,10 @@ public class Entrada implements IEntrada {
 	@Override
 	public double precio() {
 		double precioTotal = funcion.getPrecioBase();
-		if (funcion.getSede() instanceof EstadioDeFutbol){ //Si es EstadioDeFutbol no influye en el precio
+		if (funcion.getSede().getClass().equals(EstadioDeFutbol.class)){ //Si es EstadioDeFutbol no influye en el precio
 			return precioTotal;
 		}
-		if (funcion.getSede() instanceof MiniEstadio){
+		if (funcion.getSede().getClass().equals(MiniEstadio.class) ){
 			precioTotal+=((MiniEstadio)funcion.getSede()).getValorConsumision(); //DownCasting
 		}
 		precioTotal= precioTotal*(1+this.ubicacion.getSector().getAdicionalSector()/100.0); // Aumento el porcentaje del adicional Al sector 
@@ -53,7 +54,30 @@ public class Entrada implements IEntrada {
 		}
 	}
 	// Operaciones
-
+	public Entrada crearUnaNuevEntradaModificada(String fecha, String sector, int asiento){
+		Fecha nuevaFecha = new Fecha(fecha);
+		if(this.espectaculo.getFunciones().containsKey(nuevaFecha)){
+			Funcion nuevaFuncion = this.espectaculo.devolverFuncion(fecha);
+			if(!(nuevaFuncion.getSede() instanceof EstadioDeFutbol)){
+				Sector nuevoSector = nuevaFuncion.getSede().getSector(sector);
+				return new Entrada(this.espectaculo, fecha, this.emailUsuario, nuevoSector, asiento);
+			}
+			throw new RuntimeException("El estadio de futbol no usa asientos");
+		}
+		throw new RuntimeException("No existe una funcion para el mismo espectaculo en esa fecha");
+	}
+	public Entrada crearUnaNuevEntradaModificada(String fecha){
+		Fecha nuevaFecha = new Fecha(fecha);
+		if(this.espectaculo.getFunciones().containsKey(nuevaFecha)){
+			Funcion nuevaFuncion = this.espectaculo.devolverFuncion(fecha);
+			if((nuevaFuncion.getSede() instanceof EstadioDeFutbol)){
+				Sector nuevoSector = nuevaFuncion.getSede().getSectores().get(0);
+				return new Entrada(this.espectaculo, fecha, this.emailUsuario, nuevoSector);
+			}
+			throw new RuntimeException("la sede Usa asientos usa asientos");
+		}
+		throw new RuntimeException("No existe una funcion para el mismo espectaculo en esa fecha");
+	}
 	public void cambiarSedeYFuncion(Funcion nuevaFuncion) {
 		// COMPLETAR
 	}
@@ -94,16 +118,18 @@ public class Entrada implements IEntrada {
 	//- 7196 - Coldplay en vivo - 30/04/2025 P - La bombonera - CAMPO
 	Fecha fechaActual = Fecha.actual();
 	StringBuilder sb = new StringBuilder();
-    sb.append(" - ")
+    sb.append("- ")
 	  .append(this.codigo)
       .append(" - ")
       .append(this.espectaculo.getNombre())
       .append(" - ")
-      .append(this.funcion.ObtenerFecha());
+      .append(this.funcion.ObtenerFecha().toString());
 	  if(funcion.ObtenerFecha().esAnterior(fechaActual)){
 		 sb.append(" P - ");
+	  }else{
+		sb.append(" - ");
 	  }
-      sb.append(this.funcion.getSede().toString());
+      sb.append(this.funcion.getSede().getNombre());
 	  if (this.ubicacion !=null) {
 		sb.append(" - ").append(this.ubicacion.toString());
 	  }

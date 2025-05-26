@@ -25,12 +25,14 @@ public class Ubicacion {
 	//Platea Común f:3 a:31
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
-		if (sector.getNombre().equals(sector.getNombre())){
-			sb.append(sector.getNombre());
+		sb.append(sector.getNombre());
+		if (sector.getNombre().equals("CAMPO")){
 			return sb.toString();
 		}
-		sb.append(" f:").append(this.fila);
-		sb.append(" a:").append(this.asiento);
+		else{
+			sb.append(" f:").append(this.fila);
+			sb.append(" a:").append(this.asiento);
+		}
 		return sb.toString();
 	}
 

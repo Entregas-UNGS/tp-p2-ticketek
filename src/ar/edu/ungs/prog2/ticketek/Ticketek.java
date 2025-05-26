@@ -226,26 +226,46 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha, String sector, int asiento) {
-		// TODO Auto-generated method stub
-		return null;
+		if(entrada != null){
+			Entrada entradaVieja = (Entrada)entrada;
+			Usuario usuario = usuarios.get(entradaVieja.getEmailUsuario());
+			Entrada entradaNueva = entradaVieja.crearUnaNuevEntradaModificada(fecha, sector, asiento);
+			entradaVieja.anularEntrada();
+			usuario.anularEntrada(entradaVieja, contrasenia); 
+			usuario.comprarEntrada(entradaNueva);
+			return entradaNueva;
+		}
+		throw new RuntimeException("la entrada es nula");
 	}
 
 	@Override
 	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha) {
-		// TODO Auto-generated method stub
-		return null;
+		if(entrada != null){
+			Entrada entradaVieja = (Entrada)entrada;
+			Usuario usuario = usuarios.get(entradaVieja.getEmailUsuario());
+			Entrada entradaNueva = entradaVieja.crearUnaNuevEntradaModificada(fecha);
+			entradaVieja.anularEntrada();
+			usuario.anularEntrada(entradaVieja, contrasenia);
+			usuario.comprarEntrada(entradaNueva);
+			return entradaNueva;
+		}
+		throw new RuntimeException("la entrada es nula");
 	}
 
 	@Override
 	public double costoEntrada(String nombreEspectaculo, String fecha) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(espectaculos.containsKey(nombreEspectaculo)){
+			return espectaculos.get(nombreEspectaculo).consultarCostoEntrada(fecha);
+		}
+		throw new RuntimeException("No existe la funcion");
 	}
 
 	@Override
 	public double costoEntrada(String nombreEspectaculo, String fecha, String sector) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(espectaculos.containsKey(nombreEspectaculo)){
+			return espectaculos.get(nombreEspectaculo).consultarCostoEntrada(fecha, sector);
+		}
+		throw new RuntimeException("No existe la funcion");
 	}
 
 	@Override

@@ -6,7 +6,7 @@ public class EstadioDeFutbol extends Sede {
 	public EstadioDeFutbol(String nombre, String direccion, int capacidadMaxima) {
 		super(nombre, direccion, capacidadMaxima);
 		int adicionalAlSector = 0;
-		Sector campo = new Sector ("Campo", capacidadMaxima, adicionalAlSector); //Asumo que la cantidad de asientos por fila en campo es la capMax porq no hay asientos en campo
+		Sector campo = new Sector ("CAMPO", capacidadMaxima, adicionalAlSector); //Asumo que la cantidad de asientos por fila en campo es la capMax porq no hay asientos en campo
 		super.sectores.add(campo);
 	}
 
