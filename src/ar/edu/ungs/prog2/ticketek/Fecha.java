@@ -28,11 +28,6 @@ public class Fecha implements Comparable<Fecha> {
 		return this.fecha.isBefore(otro.fecha);
 	}
 
-	public int diasDesde(Fecha inicio) {
-		// TODO
-		return 0;
-	}
-
 	@Override
 	public String toString() {
 		// Extraigo dia, mes y año de la fecha con formato (yyyy-mm-dd)

@@ -6,7 +6,7 @@ import java.util.Map;
 public class Espectaculo {
 	private String nombre;
 	public Map<Fecha, Funcion> funciones;
-	public Map<String, Double> recaudado;
+	private Map<String, Double> recaudado;
 
 	// CONSTRUCTOR
 	public Espectaculo(String nombre) {
@@ -28,26 +28,27 @@ public class Espectaculo {
 			throw new RuntimeException("Ya existe una funcion con esa fecha");
 		}
 	}
-
+	//Consulto el precio de la entrada en el Estadio
 	public double consultarCostoEntrada(String fecha) {
 		Fecha dateFecha = new Fecha (fecha);
 		if(funciones.containsKey(dateFecha)){
-			return this.funciones.get(dateFecha).getPrecioBase();
+			return this.funciones.get(dateFecha).getPrecioBase(); //No sufre modificaciones el precio de los estadios
 		}else{
 			throw new RuntimeException("No existe una funcion con esa fecha");
 		}
 	}
+	//Consulto el precio de la entrada en el MiniEstadio o Teatro
 		public double consultarCostoEntrada(String fecha, String sector) {
 		double precioTotal = 0;
 		Fecha dateFecha = new Fecha (fecha);
 		if(funciones.containsKey(dateFecha)){
-			Funcion funcion = this.funciones.get(dateFecha);
+			Funcion funcion = this.funciones.get(dateFecha); //Tomo la funcion
 			Sede sede= funcion.getSede();
 			precioTotal = funcion.getPrecioBase();
-			if (sede.getClass().equals(MiniEstadio.class)){
+			if (sede instanceof MiniEstadio){ //Si es MiniEstadio o una instancia del mimso entra en el if
 				precioTotal += ((MiniEstadio)sede).getValorConsumision();
 			}
-			precioTotal = precioTotal * (1+sede.getSector(sector).getAdicionalSector()/100.0);
+			precioTotal = precioTotal * (1+sede.getSector(sector).getAdicionalSector()/100.0); //Calculo el agregado por sector
 			return precioTotal;
 		}else{
 			throw new RuntimeException("No existe una funcion con esa fecha");

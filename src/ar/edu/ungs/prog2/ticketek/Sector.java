@@ -8,6 +8,8 @@ public class Sector {
 	private int capacidad;
 	
 	//CONSTRUCTOR
+
+	//Sectores con asinetos
 	public Sector(String nombre, int capacidad, int asientosPorFila, int adicionalAlSector) {
 	  this.nombre = nombre;
 	  this.capacidad = capacidad;
@@ -15,16 +17,12 @@ public class Sector {
     this.adicionalAlSector = adicionalAlSector;
 	}
 	
+	//Sectores sin asientos
 	public Sector(String nombre, int capacidad, int adicionalAlSector) {
 		this.nombre = nombre;
 		this.capacidad = capacidad;
    		this.adicionalAlSector = adicionalAlSector;
 	}
-	
-	public int capacidad() {
-		return this.asientosPorFila * this.filas;
-	}
-	
 //GETTERS----------------------------------------------------------------------------------------
 	public int getCapacidad() {
 		return this.capacidad;

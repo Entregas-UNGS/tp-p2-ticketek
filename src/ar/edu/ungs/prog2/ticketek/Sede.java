@@ -2,10 +2,7 @@ package ar.edu.ungs.prog2.ticketek;
 
 import java.util.ArrayList;
 
-import javax.management.RuntimeErrorException;
-
 public abstract class Sede {
-	private String tipo;
 	private String nombre;
 	private String direccion;
 	private Integer capacidadMaxima;
@@ -18,48 +15,21 @@ public abstract class Sede {
 		this.capacidadMaxima = capacidadMaxima;
 		this.sectores = new ArrayList<Sector>();
 	}
+	// OPERACIONES--------------------------------------------------------------------------------------------------------
 
-	public Sede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila, String[] sectores,
-			int[] capacidad, int[] porcentajeAdicional) {
-
-	}
-
-	public Sede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila, int cantidadPuestos,
-			double precioConsumicion, String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
-	}
-
-	// Hace falta los constructores aca siendo una clase abstracta? O aplicamos
-	// directamente polimorfimo con
-	// Teatro, MiniEstadio y EstadioDeFutbol
-	public void crearSectores(String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
-		if (sectores.length == capacidad.length && capacidad.length == porcentajeAdicional.length) {
-			for (int i = 0; i < sectores.length; i++) {
-				Sector platea = new Sector(sectores[i], capacidad[i], porcentajeAdicional[i]);
-				this.sectores.add(platea);
-			}
-		} else {
-			throw new RuntimeException("No coinciden la cantidad de datos dados");
-		}
-	}
-
-	// EstadioDeFutbol
+	// Teatro y MiniEstadio (Creo los sectores)
 	public void crearSectores(String[] sectores, int[] capacidad, int asientosPorFila, int[] porcentajeAdicional) {
-		if (sectores.length == capacidad.length && capacidad.length == porcentajeAdicional.length) {
+		if (sectores.length == capacidad.length && capacidad.length == porcentajeAdicional.length) { //Reviso que el largo de todos los arreglos sean el mismo
 			for (int i = 0; i < sectores.length; i++) {
-				Sector platea = new Sector(sectores[i], capacidad[i], asientosPorFila, porcentajeAdicional[i]);
-				this.sectores.add(platea);
+				Sector platea = new Sector(sectores[i], capacidad[i], asientosPorFila, porcentajeAdicional[i]); //Creo cada sector
+				this.sectores.add(platea); //Lo agrego al diccionario
 			}
 		} else {
 			throw new RuntimeException("No coinciden la cantidad de datos dados");
 		}
 	}
 
-	// OPERACIONES
-	public void revisarCapacidadMaxima() {
-		// COMPLETAR
-	}
-
-	public Sector getSector(String nombreSector) {
+	public Sector getSector(String nombreSector) { //Doy el nombre del sector y me devuelve el Sector
 		for (Sector sector : sectores) {
 			if (sector.getNombre().equals(nombreSector)) {
 				return sector;
@@ -68,7 +38,7 @@ public abstract class Sede {
 		throw new RuntimeException("No Existe dicho secto");
 	}
 
-	public String NombreDelSector(int indice) {
+	public String NombreDelSector(int indice) { //Ingreso el indice del sector y me devuelve el Sector
 		if (indice >= 0 && indice < sectores.size()) {
         	return sectores.get(indice).getNombre();
    		} else {
@@ -83,17 +53,17 @@ public abstract class Sede {
     	}
 	}
 	@Override
-	//Teatro San Martín
+	
 	public String toString(){
+		//Ejemplo de lo deseado:
+		//Teatro San Martín
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.getClass().getSimpleName());
-		sb.append(" ").append(this.nombre);
+		sb.append(this.getClass().getSimpleName()); //Agarro unicamente el NOMBRE de la clase
+		sb.append(" ").append(this.nombre); //Agrego el nombre de la sede
 		return sb.toString();
 	}
-		// GETTERS
-	public String getTipo() {
-		return tipo;
-	}
+
+	// GETTERS-----------------------------------------------------------------------------------
 
 	public String getNombre() {
 		return nombre;

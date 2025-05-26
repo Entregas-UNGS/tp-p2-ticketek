@@ -18,7 +18,7 @@ public class Entrada implements IEntrada {
 		this.precio=precio();
 		Ubicacion ubicacion = new Ubicacion(sector);
 		this.ubicacion = ubicacion;
-		sumoLoRecaudado(espectaculo, fecha);
+		sumoLoRecaudado(espectaculo, fecha); //Cada vez que compro una entrada sumo lo recaudado
 	}
 
 	//Aca podemos ver como se aplica sobrecarga
@@ -31,7 +31,7 @@ public class Entrada implements IEntrada {
 		this.ubicacion = ubicacion;
 		this.codigo = Codigo.generar();
 		this.precio=precio();
-		sumoLoRecaudado(espectaculo, fecha);
+		sumoLoRecaudado(espectaculo, fecha); //Cada vez que compro una entrada sumo lo recaudado
 	}
 	// OPERACIONES
 
@@ -61,7 +61,7 @@ public class Entrada implements IEntrada {
 			asientos[ubicacion.getAsiento()] = false;
 			Espectaculo espectaculo = this.espectaculo;
 			String fecha = this.funcion.ObtenerFecha().toString();
-			RestoALoRecaudado(espectaculo, fecha);
+			RestoALoRecaudado(espectaculo, fecha); //Cada ves que anulo una entrada resto lo recaudado por esa entrada
 		}
 	}
 	// Operaciones

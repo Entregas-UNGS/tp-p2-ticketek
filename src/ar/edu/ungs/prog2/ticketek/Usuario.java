@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Iterator;
 
 public class Usuario {
 	private String email;
@@ -28,62 +29,44 @@ public class Usuario {
 		this.entradas = new HashMap<>();
 	}
 
-	public Usuario() {
-	}
-
 	public void comprarEntrada(Entrada entrada) {
-		entradas.put(entrada.getCodigo(), entrada);
+		entradas.put(entrada.getCodigo(), entrada); //Agrego la entrada al diccionario
 	};
 
 	public List<IEntrada> obtenerTodasLasEntradas() {
-		return new ArrayList<>(entradas.values());
+		return new ArrayList<>(entradas.values()); //Devuevlo la lista de todas las entradas del usuario
 	}
 
 	public List<IEntrada> obtenerEntradasFuturas() {
-		Fecha fechaActual = Fecha.actual();
-		List<IEntrada> entradasFuturas = new ArrayList<>();
+    	Fecha fechaActual = Fecha.actual();
+    	List<IEntrada> entradasFuturas = new ArrayList<>();
 
-		for (IEntrada entrada : entradas.values()) {
+   	 	Iterator <IEntrada> iterador = entradas.values().iterator(); //Resuelvo con iterator para recorrer
+    	while (iterador.hasNext()) { //Mientras haya entradas
+			IEntrada entrada = iterador.next();
+			//Verifico que la entrada sea de tipo Entrada
 			if (entrada instanceof Entrada) {
 				Entrada e = (Entrada) entrada;
-
-				if (e.obtenerFecha().esPosterior(fechaActual)) {
+				if (e.obtenerFecha().esPosterior(fechaActual)) { //Si es posterior la agrego a la lista
 					entradasFuturas.add(e);
 				}
 			}
-		}
-		return entradasFuturas;
+    	}
+    	return entradasFuturas;
 	}
 	public boolean anularEntrada(Entrada entrada, String c){
-		if(c.equals(this.contrasenia)){
-			if(entradas.containsKey(entrada.getCodigo())){
-				entradas.remove(entrada.getCodigo(), entrada);
-				entrada = null;
-				return true;
+		if(c.equals(this.contrasenia)){ //Si al contraseña es igual
+			if(entradas.containsKey(entrada.getCodigo())){ //Si la entrada existe
+				entradas.remove(entrada.getCodigo(), entrada); //La saco de entradas
+				entrada = null; //La hago null
+				return true; //True, se pudo anular
 			}
 			throw new RuntimeException("La entrada no existe");
 		}
 		throw new RuntimeException("Contraseña incorrecta");
 
 	}
-
-	// Getters
-	public String obtenerEmail() {
-		return this.email;
-	}
-
-	public String obtenerContrasenia() {
-		return this.contrasenia;
-	}
-//
-//	public String obtenerNombre() {
-//		return nombre;
-//	}
-//
-//	public String obtenerApellido() {
-//		return apellido;
-//	}
-
+	//Hacemos un equals en el que importa unicamente el email
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -101,10 +84,18 @@ public class Usuario {
 	public int hashCode() {
 		return Objects.hash(email);
 	}
-
+	//Hacemos el toString con el nombre, apellido y email
 	@Override
 	public String toString() {
 		return "nombre:" + nombre + ", apellido:" + apellido + "email:" + email;
+	}
+	// Getters------------------------------------------------------------------------------------------------------
+	public String obtenerEmail() {
+		return this.email;
+	}
+
+	public String obtenerContrasenia() {
+		return this.contrasenia;
 	}
 
 }

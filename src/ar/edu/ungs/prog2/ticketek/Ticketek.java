@@ -6,23 +6,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.management.RuntimeErrorException;
-
 public class Ticketek implements ITicketek {
 
 	private Map<String, Usuario> usuarios;
 	private Map<String, Sede> sedes;
 	private Map<String, Espectaculo> espectaculos;
-	private Usuario usuarioAutencicado;
 
 	public Ticketek() {
 		this.sedes = new HashMap<>();
 		this.espectaculos = new HashMap<>();
 		this.usuarios = new HashMap<>();
-		this.usuarioAutencicado = new Usuario();
 	}
 
-	// Preguntar si esta bien
 	@Override
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima) {
 		if (!sedes.containsKey(nombre)) { // Chequeo que no haya otra sede con el mimso nombre
@@ -129,12 +124,8 @@ public class Ticketek implements ITicketek {
 		existeFuncion(fecha, nombreEspectaculo);
 		// Creo las entradas y las guardo en la lista
 		List<IEntrada> entradasEnlistadas = new ArrayList<>();
-		Sector sectorEntrada = espectaculos.get(nombreEspectaculo).devolverFuncion(fecha).getSede().getSector(sector); // Guardo
-																														// el
-																														// sector
-																														// para
-																														// la
-																														// entrada
+		//Guardo el sector y la funcion de la entrada
+		Sector sectorEntrada = espectaculos.get(nombreEspectaculo).devolverFuncion(fecha).getSede().getSector(sector);
 		Funcion funcionEntrada = espectaculos.get(nombreEspectaculo).devolverFuncion(fecha);
 		for (int i = 0; i < asientos.length; i++) {
 			if (funcionEntrada.verificarDisponibilidad(sectorEntrada, asientos[i])) {
@@ -176,7 +167,7 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public List<IEntrada> listarEntradasEspectaculo(String nombreEspectaculo) {
-		if (!espectaculos.containsKey(nombreEspectaculo)) {
+		if (!espectaculos.containsKey(nombreEspectaculo)) { //Verifico si existe el espectaculo
 			throw new RuntimeException("El espectáculo no existe");
 		}
 
@@ -185,45 +176,50 @@ public class Ticketek implements ITicketek {
 		for (Usuario usuario : usuarios.values()) {
 			for (IEntrada e : usuario.obtenerTodasLasEntradas()) {
 				Entrada entrada = (Entrada) e;
-				String espectaculoDeLaEntrada = entrada.getEspectaculo().getNombre();
+				String espectaculoDeLaEntrada = entrada.getEspectaculo().getNombre(); //Recorro todas las entradas
 
-				if (espectaculoDeLaEntrada.equals(nombreEspectaculo)) {
-					entradas.add(entrada);
+				if (espectaculoDeLaEntrada.equals(nombreEspectaculo)) { // Si es la correcta
+					entradas.add(entrada); //Lo agrego a la lista
 				}
 			}
 		}
 
-		return entradas;
+		return entradas; //devuelvo la lista
 	}
 
 	@Override
 	public List<IEntrada> listarEntradasFuturas(String email, String contrasenia) {
-		Usuario u = usuarios.get(email);
-		if (contrasenia.equals(u.obtenerContrasenia())) {
-			return u.obtenerEntradasFuturas();
+		if(usuarios.containsKey(email)){ //Verficio que existe el usuario
+			Usuario u = usuarios.get(email);
+			if (contrasenia.equals(u.obtenerContrasenia())) { //Verifico contraseña
+				return u.obtenerEntradasFuturas(); //Devuelvo las entradas que todavia no pasaron
+			}
+			throw new RuntimeException("La Contraseña es incorrecta");
 		}
-		throw new RuntimeException("La Contraseña es incorrecta");
-
+		throw new RuntimeException("No existe dicho usuario");
 	}
 
 	@Override
 	public List<IEntrada> listarTodasLasEntradasDelUsuario(String email, String contrasenia) {
-		Usuario u = usuarios.get(email);
-		if (contrasenia.equals(u.obtenerContrasenia())) {
-			return u.obtenerTodasLasEntradas();
+		if(usuarios.containsKey(email)){ //Verficio que existe el usuario
+			Usuario u = usuarios.get(email); //Verifico contraseña
+			if (contrasenia.equals(u.obtenerContrasenia())) {
+				return u.obtenerTodasLasEntradas();//Devuelvo todas las entradas del usuario
+			}
+			throw new RuntimeException("La Contraseña es incorrecta");
 		}
-		throw new RuntimeException("La Contraseña es incorrecta");
+		throw new RuntimeException("No existe dicho usuario");
 	}
 
 	@Override
 	public boolean anularEntrada(IEntrada entrada, String contrasenia) {
-		if (entrada != null) {
-			Entrada entradaActual = (Entrada) entrada; // Casting down
+		if (entrada != null) { //Verifico que la entrada no sea nula
+			Entrada entradaActual = (Entrada) entrada; // DownCasting
 			String email = entradaActual.getEmailUsuario();
-			if (usuarios.containsKey(email)) {
+			if (usuarios.containsKey(email)) { //Verifico que exista el Usuario
 				Usuario u = usuarios.get(email);
-				entradaActual.anularEntrada();
-				return u.anularEntrada(entradaActual, contrasenia);
+				entradaActual.anularEntrada(); //Anulo la entrada (Desocupo asientos, esto lo recaudado)
+				return u.anularEntrada(entradaActual, contrasenia); //Anulo la entrada y devuelvo true o un error
 			}
 			return false;
 		}
@@ -231,13 +227,15 @@ public class Ticketek implements ITicketek {
 	}
 
 	@Override
-	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha, String sector, int asiento) {
-		if(entrada != null){
-			Entrada entradaVieja = (Entrada)entrada;
-			Usuario usuario = usuarios.get(entradaVieja.getEmailUsuario());
-			Entrada entradaNueva = entradaVieja.crearUnaNuevEntradaModificada(fecha, sector, asiento);
+	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha, String sector, int asiento) { //Para sedes con asientos
+		if(entrada != null){ //Verifico que la entrada no sea nula
+			Entrada entradaVieja = (Entrada)entrada; //DownCasting
+			Usuario usuario = usuarios.get(entradaVieja.getEmailUsuario()); 
+			Entrada entradaNueva = entradaVieja.crearUnaNuevEntradaModificada(fecha, sector, asiento); //Creo una nueva entrada con los datos dado
+			//Elimino la anterior Entrada
 			entradaVieja.anularEntrada();
 			usuario.anularEntrada(entradaVieja, contrasenia); 
+			//Agrego la entrada al usuario
 			usuario.comprarEntrada(entradaNueva);
 			return entradaNueva;
 		}
@@ -245,13 +243,15 @@ public class Ticketek implements ITicketek {
 	}
 
 	@Override
-	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha) {
-		if(entrada != null){
-			Entrada entradaVieja = (Entrada)entrada;
+	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha) { //Para sedes sin asientos
+		if(entrada != null){//Verifico que la entrada no sea nula
+			Entrada entradaVieja = (Entrada)entrada; //DownCasting
 			Usuario usuario = usuarios.get(entradaVieja.getEmailUsuario());
-			Entrada entradaNueva = entradaVieja.crearUnaNuevEntradaModificada(fecha);
+			Entrada entradaNueva = entradaVieja.crearUnaNuevEntradaModificada(fecha); //Creo una nueva entrada con los datos dado
+			//Elimino la anterior Entrada
 			entradaVieja.anularEntrada();
 			usuario.anularEntrada(entradaVieja, contrasenia);
+			//Agrego la entrada al usuario
 			usuario.comprarEntrada(entradaNueva);
 			return entradaNueva;
 		}
@@ -259,43 +259,42 @@ public class Ticketek implements ITicketek {
 	}
 
 	@Override
-	public double costoEntrada(String nombreEspectaculo, String fecha) {
-		if(espectaculos.containsKey(nombreEspectaculo)){
-			return espectaculos.get(nombreEspectaculo).consultarCostoEntrada(fecha);
+	public double costoEntrada(String nombreEspectaculo, String fecha) { //Estadio de Futbol que no modifica el costo de la entrada segun la sede
+		if(espectaculos.containsKey(nombreEspectaculo)){ //Verifico que exista el espectaculo
+			return espectaculos.get(nombreEspectaculo).consultarCostoEntrada(fecha); //Devuelvo el costo de la entrada
 		}
 		throw new RuntimeException("No existe la funcion");
 	}
 
 	@Override
-	public double costoEntrada(String nombreEspectaculo, String fecha, String sector) {
-		existeEspectaculo(nombreEspectaculo);
-		return espectaculos.get(nombreEspectaculo).consultarCostoEntrada(fecha, sector);
+	public double costoEntrada(String nombreEspectaculo, String fecha, String sector) {//Teatro y Miniestadio que modifica el costo de la entrada segun la sede
+		existeEspectaculo(nombreEspectaculo); //Verifico si existe el espectaculo
+		return espectaculos.get(nombreEspectaculo).consultarCostoEntrada(fecha, sector); //Devuelvo el costo de la entrada
 	}
 
 	@Override
 	public double totalRecaudado(String nombreEspectaculo) {
-		existeEspectaculo(nombreEspectaculo);
+		existeEspectaculo(nombreEspectaculo); //Verifico si existe el espectaculo
 		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
 		double total = 0.0;
    		for (double valor : espectaculo.getRecaudado().values()) {
-        	total += valor;
+        	total += valor; //Sumo lo recaudado de cada funcion
     	}
     	return total;
 	}
 
 	@Override
 	public double totalRecaudadoPorSede(String nombreEspectaculo, String nombreSede) {
-		existeEspectaculo(nombreEspectaculo);
+		existeEspectaculo(nombreEspectaculo); //Verifico si existe el espectaculo
 		Espectaculo espectaculo = espectaculos.get(nombreEspectaculo);
-		if (espectaculo.getRecaudado().containsKey(nombreSede)){
-			return espectaculo.getRecaudado().get(nombreSede);
+		if (espectaculo.getRecaudado().containsKey(nombreSede)){ //Si existe una sede con ese nomber
+			return espectaculo.getRecaudado().get(nombreSede); //Devuelvo lo recaudado por la sede O(1)
 		}
 		throw new RuntimeException("No existe una funcion con esa sede");
 	}
 
 	private void existeUsuario(String mail) { // Verifico si existe el usuario con dicho mail
-		if (usuarios.containsKey(mail)) {
-			return;
+		if (usuarios.containsKey(mail)) { 
 		} else {
 			throw new RuntimeException("No existe usuario con ese mail");
 		}
