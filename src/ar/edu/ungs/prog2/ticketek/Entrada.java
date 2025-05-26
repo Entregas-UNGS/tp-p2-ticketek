@@ -1,7 +1,10 @@
 package ar.edu.ungs.prog2.ticketek;
 
+import java.util.UUID;
+
 public class Entrada implements IEntrada {
-	private final String codigo;
+	private static int contadorCodigos = 1;
+	private String codigo;
 	private Espectaculo espectaculo;
 	private Funcion funcion;
 	private Ubicacion ubicacion;
@@ -13,7 +16,7 @@ public class Entrada implements IEntrada {
 	public Entrada(Espectaculo espectaculo, String fecha, String email , Sector sector) { //SE USA PARA ESTADIO DE FUTBOL, YA QUE NO UTILIZA ASIENTOS
 		this.espectaculo=espectaculo;
 		this.funcion = espectaculo.devolverFuncion(fecha);
-		this.codigo = Codigo.generar();
+		this.generarCodigo();
 		this.emailUsuario = email;
 		this.precio=precio();
 		Ubicacion ubicacion = new Ubicacion(sector);
@@ -29,7 +32,7 @@ public class Entrada implements IEntrada {
 		this.funcion = espectaculo.devolverFuncion(fecha);
 		Ubicacion ubicacion = new Ubicacion(sector, asiento);
 		this.ubicacion = ubicacion;
-		this.codigo = Codigo.generar();
+		this.generarCodigo();
 		this.precio=precio();
 		sumoLoRecaudado(espectaculo, fecha); //Cada vez que compro una entrada sumo lo recaudado
 	}
@@ -132,6 +135,10 @@ public class Entrada implements IEntrada {
 		sb.append(" - ").append(this.ubicacion.toString());
 	  }
     return sb.toString();
+	}
+	private void generarCodigo() {
+    	this.codigo = "" + contadorCodigos;
+		contadorCodigos++;
 	}
 
 
