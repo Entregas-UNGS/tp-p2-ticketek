@@ -103,7 +103,8 @@ public class Ticketek implements ITicketek {
 		// Creo las entradas y las guardo en la lista
 		List<IEntrada> entradasEnlistadas = new ArrayList<>();
 		Fecha fechaEntrada = new Fecha(fecha);
-		Sector sectorEstadio = espectaculos.get(nombreEspectaculo).getFunciones().get(fechaEntrada).getSede().DevolverSector(0);
+		Sector sectorEstadio = espectaculos.get(nombreEspectaculo).getFunciones().get(fechaEntrada).getSede()
+				.DevolverSector(0);
 		for (int i = 1; i <= cantidadEntradas; i++) {
 			Entrada entradaNueva = new Entrada(espectaculos.get(nombreEspectaculo), fecha, email, sectorEstadio);
 			entradasEnlistadas.add(entradaNueva);
@@ -144,48 +145,65 @@ public class Ticketek implements ITicketek {
 		return entradasEnlistadas;
 	}
 
-@Override
+	@Override
 	public String listarFunciones(String nombreEspectaculo) {
 		if (!this.espectaculos.containsKey(nombreEspectaculo)) {
 			throw new RuntimeException("Espectaculo no encontrado");
 		}
 
 		Map<Fecha, Funcion> funcionesPorEspectaculo = this.espectaculos.get(nombreEspectaculo).funciones;
-		List<Fecha> fechas = new ArrayList<>(funcionesPorEspectaculo.keySet()); //Guardo las fechas para darles orden
-		fechas.sort(null); //Ordeno las fechas
+		List<Fecha> fechas = new ArrayList<>(funcionesPorEspectaculo.keySet()); // Guardo las fechas para darles orden
+		fechas.sort(null); // Ordeno las fechas
 
 		StringBuilder sb = new StringBuilder();
 
 		for (int i = 0; i < fechas.size(); i++) {
-			Funcion funcion = funcionesPorEspectaculo.get(fechas.get(i)); //Llamo a la funcion en orden cronologico segun la lista ordenada
-			sb.append(funcion.toString()); //Agrego la funcion al String Builder
-			if (i < fechas.size()) { //Si no es el ultimo indice hago un salto de linea
+			Funcion funcion = funcionesPorEspectaculo.get(fechas.get(i)); // Llamo a la funcion en orden cronologico segun la
+																																		// lista ordenada
+			sb.append(funcion.toString()); // Agrego la funcion al String Builder
+			if (i < fechas.size()) { // Si no es el ultimo indice hago un salto de linea
 				sb.append("\n");
 			}
 		}
-		return sb.toString(); //Returno el String con las funciones ordenadas
+		return sb.toString(); // Returno el String con las funciones ordenadas
 	}
 
 	@Override
 	public List<IEntrada> listarEntradasEspectaculo(String nombreEspectaculo) {
-		// TODO Auto-generated method stub
-		return null;
+		if (!espectaculos.containsKey(nombreEspectaculo)) {
+			throw new RuntimeException("El espectáculo no existe");
+		}
+
+		List<IEntrada> entradas = new ArrayList<>();
+
+		for (Usuario usuario : usuarios.values()) {
+			for (IEntrada e : usuario.obtenerTodasLasEntradas()) {
+				Entrada entrada = (Entrada) e;
+				String espectaculoDeLaEntrada = entrada.getEspectaculo().getNombre();
+
+				if (espectaculoDeLaEntrada.equals(nombreEspectaculo)) {
+					entradas.add(entrada);
+				}
+			}
+		}
+
+		return entradas;
 	}
 
 	@Override
 	public List<IEntrada> listarEntradasFuturas(String email, String contrasenia) {
 		Usuario u = usuarios.get(email);
-		if(contrasenia.equals(u.obtenerContrasenia())){
+		if (contrasenia.equals(u.obtenerContrasenia())) {
 			return u.obtenerEntradasFuturas();
 		}
 		throw new RuntimeException("La Contraseña es incorrecta");
-		
+
 	}
 
 	@Override
 	public List<IEntrada> listarTodasLasEntradasDelUsuario(String email, String contrasenia) {
 		Usuario u = usuarios.get(email);
-				if(contrasenia.equals(u.obtenerContrasenia())){
+		if (contrasenia.equals(u.obtenerContrasenia())) {
 			return u.obtenerTodasLasEntradas();
 		}
 		throw new RuntimeException("La Contraseña es incorrecta");
@@ -193,10 +211,10 @@ public class Ticketek implements ITicketek {
 
 	@Override
 	public boolean anularEntrada(IEntrada entrada, String contrasenia) {
-		if(entrada != null){
-			Entrada entradaActual = (Entrada) entrada; //Casting down
+		if (entrada != null) {
+			Entrada entradaActual = (Entrada) entrada; // Casting down
 			String email = entradaActual.getEmailUsuario();
-			if(usuarios.containsKey(email)){
+			if (usuarios.containsKey(email)) {
 				Usuario u = usuarios.get(email);
 				entradaActual.anularEntrada();
 				return u.anularEntrada(entradaActual, contrasenia);
