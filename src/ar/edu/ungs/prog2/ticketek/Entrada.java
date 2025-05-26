@@ -36,10 +36,10 @@ public class Entrada implements IEntrada {
 		if (funcion.getSede().getClass().equals(EstadioDeFutbol.class)){ //Si es EstadioDeFutbol no influye en el precio
 			return precioTotal;
 		}
+		precioTotal= precioTotal*(1+this.ubicacion.getSector().getAdicionalSector()/100.0); // Aumento el porcentaje del adicional Al sector 
 		if (funcion.getSede().getClass().equals(MiniEstadio.class) ){
 			precioTotal+=((MiniEstadio)funcion.getSede()).getValorConsumision(); //DownCasting
 		}
-		precioTotal= precioTotal*(1+this.ubicacion.getSector().getAdicionalSector()/100.0); // Aumento el porcentaje del adicional Al sector 
 		return precioTotal;
 	}
 
@@ -66,8 +66,9 @@ public class Entrada implements IEntrada {
 			if(!(nuevaFuncion.getSede() instanceof EstadioDeFutbol)){
 				Sector nuevoSector = nuevaFuncion.getSede().getSector(sector);
 				return new Entrada(this.espectaculo, fecha, this.emailUsuario, nuevoSector, asiento);
+			}else{
+				throw new RuntimeException("El estadio de futbol no usa asientos");
 			}
-			throw new RuntimeException("El estadio de futbol no usa asientos");
 		}
 		throw new RuntimeException("No existe una funcion para el mismo espectaculo en esa fecha");
 	}
@@ -78,8 +79,9 @@ public class Entrada implements IEntrada {
 			if((nuevaFuncion.getSede() instanceof EstadioDeFutbol)){
 				Sector nuevoSector = nuevaFuncion.getSede().getSectores().get(0);
 				return new Entrada(this.espectaculo, fecha, this.emailUsuario, nuevoSector);
+			}else{
+				throw new RuntimeException("la sede Usa asientos usa asientos");
 			}
-			throw new RuntimeException("la sede Usa asientos usa asientos");
 		}
 		throw new RuntimeException("No existe una funcion para el mismo espectaculo en esa fecha");
 	}
@@ -97,8 +99,9 @@ public class Entrada implements IEntrada {
 		if(espectaculo.getRecaudado().containsKey(sede.getNombre())){
 			double totalRecaudado = espectaculo.getRecaudado().get(sede.getNombre()) - precio();
 			espectaculo.getRecaudado().replace(sede.getNombre(), totalRecaudado);
+		}else{
+			throw new RuntimeException("No existe una funcion en esta sede");
 		}
-		throw new RuntimeException("No existe una funcion en esta sede");
 	}
 
 	// GETTERS ---------------------------------------------

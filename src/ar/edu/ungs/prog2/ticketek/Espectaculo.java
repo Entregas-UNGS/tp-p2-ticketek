@@ -33,8 +33,9 @@ public class Espectaculo {
 		Fecha dateFecha = new Fecha (fecha);
 		if(funciones.containsKey(dateFecha)){
 			return this.funciones.get(dateFecha).getPrecioBase();
+		}else{
+			throw new RuntimeException("No existe una funcion con esa fecha");
 		}
-		throw new RuntimeException("No existe una funcion con esa fecha");
 	}
 		public double consultarCostoEntrada(String fecha, String sector) {
 		double precioTotal = 0;
@@ -48,8 +49,9 @@ public class Espectaculo {
 			}
 			precioTotal = precioTotal * (1+sede.getSector(sector).getAdicionalSector()/100.0);
 			return precioTotal;
+		}else{
+			throw new RuntimeException("No existe una funcion con esa fecha");
 		}
-		throw new RuntimeException("No existe una funcion con esa fecha");
 	}
 //GETTERS -------------------------------
 
