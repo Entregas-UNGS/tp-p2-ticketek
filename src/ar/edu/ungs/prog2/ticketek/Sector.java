@@ -2,7 +2,6 @@ package ar.edu.ungs.prog2.ticketek;
 
 public class Sector {
 	private String nombre;
-	private Integer filas;
 	private Integer asientosPorFila;
 	private Integer adicionalAlSector;
 	private int capacidad;
@@ -30,10 +29,6 @@ public class Sector {
 	
 	public String getNombre() {
 		return this.nombre;
-	}
-
-	public Integer getFilas() {
-		return this.filas;
 	}
 
 	public Integer getAsientosPorFila() {

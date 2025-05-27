@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Espectaculo {
-	private String nombre;
+	private final String nombre;
 	public Map<Fecha, Funcion> funciones;
 	private Map<String, Double> recaudado;
 
