@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Iterator;
 
 public class Usuario {
-	private String email;
+	private final String email;
 	private String contrasenia;
 	private String nombre;
 	private String apellido;

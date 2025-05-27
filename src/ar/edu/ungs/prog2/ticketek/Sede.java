@@ -3,7 +3,7 @@ package ar.edu.ungs.prog2.ticketek;
 import java.util.ArrayList;
 
 public abstract class Sede {
-	private String nombre;
+	private final String nombre;
 	private String direccion;
 	private Integer capacidadMaxima;
 	protected ArrayList<Sector> sectores;
